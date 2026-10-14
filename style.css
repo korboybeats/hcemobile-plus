@@ -1760,3 +1760,7 @@ body.editing-layout .layout-editor .touch-layer { visibility: visible !important
 .editor-bar.element-panel[hidden] { display: none; }
 .editor-bar.element-panel .editor-title { text-transform: capitalize; }
 .editor-bar.element-panel .editor-fold svg path { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+
+/* Fork plus12: thin, size-independent outlines (border divided by the control's scale, SVG strokes non-scaling) */
+.touch-layer [data-control], .touch-layer [data-control] *, .touch-layer .touch-stick, .touch-layer .touch-stick * { border-width: calc(1px / var(--s, 1)) !important; }
+.touch-layer [data-control] svg *, .touch-layer .touch-stick svg * { vector-effect: non-scaling-stroke; stroke-width: 1.6px; }
