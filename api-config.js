@@ -4,4 +4,4 @@
  * An installed home-screen PWA reads this file, so the URL sticks without ?api=.
  * You can still override per-session with ?api=https://...
  */
-window.HCE_API_BASE = "https://REPLACE_WITH_YOUR_WORKER.workers.dev";
+window.HCE_API_BASE = "https://hcemobile-api-relay.korboybeats.workers.dev";
