@@ -1,0 +1,5 @@
+*.iso
+*.xiso
+maps/
+games/
+.DS_Store

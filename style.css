@@ -637,220 +637,74 @@ body.playing .layout-editor { background: rgba(5, 6, 9, 0.45); }
 .layout-editor [data-control] { cursor: grab; }
 .layout-editor .editing { outline: 2px dashed #7fd1ff; outline-offset: 4px; }
 .touch-dpad.editing { border-radius: 50%; }
-/* Halo / UNSC edit-layout panel */
+/* Halo / UNSC edit-layout panel (compact) */
 .editor-bar {
-position: absolute;
-z-index: 40;
-left: 50%;
-top: calc(10px + env(safe-area-inset-top));
+position: absolute; z-index: 40;
+left: 50%; top: calc(8px + env(safe-area-inset-top));
 transform: translateX(-50%);
-display: flex;
-flex-direction: column;
-align-items: stretch;
-gap: 0;
-width: min(360px, calc(100vw - 20px));
-max-width: calc(100vw - 20px);
-padding: 0;
-border-radius: 4px;
-background:
-  linear-gradient(180deg, rgba(18, 32, 52, 0.96), rgba(8, 12, 20, 0.96));
-border: 1px solid rgba(127, 209, 255, 0.45);
+display: flex; flex-direction: column; align-items: stretch;
+width: min(268px, calc(100vw - 16px));
+padding: 0; border-radius: 3px;
+background: linear-gradient(180deg, rgba(16, 30, 50, 0.95), rgba(7, 11, 19, 0.95));
+border: 1px solid rgba(127, 209, 255, 0.4);
 border-left: 3px solid #7fd1ff;
 box-shadow: none;
 color: #d7ebff;
 font-family: "Rajdhani", "Segoe UI", Roboto, sans-serif;
-font-size: 14px;
-letter-spacing: 0.04em;
-white-space: normal;
-transition: opacity 0.15s;
-touch-action: none;
-overflow: hidden;
-}
-.editor-bar::before {
-content: "";
-display: block;
-height: 2px;
-background: linear-gradient(90deg, #7fd1ff, transparent 70%);
+font-size: 13px; letter-spacing: 0.04em; white-space: normal;
+transition: opacity 0.15s; touch-action: none; overflow: hidden;
 }
 .editor-bar.ghost { opacity: 0.12; pointer-events: none; }
 .editor-bar-header {
-display: flex;
-align-items: center;
-gap: 8px;
-padding: 10px 12px 8px;
+display: flex; align-items: center; gap: 6px;
+padding: 5px 6px 5px 10px; min-height: 30px;
+background: linear-gradient(90deg, rgba(127, 209, 255, 0.14), transparent 75%);
 border-bottom: 1px solid rgba(127, 209, 255, 0.18);
+cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
 }
+.editor-bar.dragging .editor-bar-header { cursor: grabbing; }
+.editor-bar.folded .editor-bar-header { border-bottom: 0; }
 .editor-title {
-flex: 1;
-font-family: Orbitron, "Rajdhani", sans-serif;
-font-weight: 700;
-font-size: 12px;
-letter-spacing: 0.16em;
-text-transform: uppercase;
-color: #7fd1ff;
+flex: 1; font-family: Orbitron, "Rajdhani", sans-serif; font-weight: 900;
+font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #7fd1ff;
 }
-.editor-tools {
-display: flex;
-flex-direction: column;
-align-items: stretch;
-gap: 14px;
-padding: 14px 14px 12px;
-}
+.editor-tools { display: flex; flex-direction: column; align-items: stretch; gap: 8px; padding: 8px 10px 9px; }
 .editor-bar.folded .editor-tools { display: none; }
-.editor-bar.folded .editor-fold svg { transform: rotate(180deg); }
-.editor-row {
-display: flex;
-flex-direction: column;
-gap: 8px;
-width: 100%;
+.editor-bar.folded .editor-fold svg { transform: rotate(-90deg); }
+.editor-seg { display: flex; border: 1px solid rgba(127, 209, 255, 0.35); border-radius: 2px; overflow: hidden; }
+.editor-seg button {
+flex: 1; min-height: 28px; border: 0; background: rgba(10, 18, 30, 0.9); color: rgba(180, 215, 240, 0.75);
+font: 700 11px/1 "Rajdhani", sans-serif; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
 }
-.editor-row-head {
-display: flex;
-align-items: baseline;
-justify-content: space-between;
-gap: 10px;
+.editor-seg button + button { border-left: 1px solid rgba(127, 209, 255, 0.35); }
+.editor-seg button.on { background: rgba(127, 209, 255, 0.85); color: #06101c; }
+.editor-row { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+.editor-row-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.editor-row-label { font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(180, 220, 255, 0.85); }
+.editor-row-value { font: 700 11px/1 ui-monospace, Menlo, monospace; color: #7fd1ff; min-width: 3em; text-align: right; }
+.editor-hint { font-size: 11px; color: rgba(160, 200, 230, 0.7); min-height: 0; }
+.editor-hint:empty { display: none; }
+.editor-bar input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 26px; margin: 0; background: transparent; cursor: pointer; }
+.editor-bar input[type=range]:disabled { opacity: 0.3; cursor: not-allowed; }
+.editor-bar input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 1px; background: rgba(20, 38, 60, 0.95); border: 1px solid rgba(127, 209, 255, 0.35); }
+.editor-bar input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; margin-top: -8px; border-radius: 2px; background: linear-gradient(180deg, #c4ecff, #4aa8e0); border: 1px solid #e8f7ff; box-shadow: none; }
+.editor-bar input[type=range]::-moz-range-track { height: 6px; border-radius: 1px; background: rgba(20, 38, 60, 0.95); border: 1px solid rgba(127, 209, 255, 0.35); }
+.editor-bar input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 2px; background: linear-gradient(180deg, #c4ecff, #4aa8e0); border: 1px solid #e8f7ff; box-shadow: none; }
+.editor-actions { display: flex; gap: 8px; }
+.editor-bar .editor-action, .editor-bar .small-button {
+flex: 1; min-height: 32px; padding: 0 10px; border-radius: 2px;
+font: 700 12px/1 "Rajdhani", "Segoe UI", sans-serif; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
 }
-.editor-row-label {
-font-weight: 700;
-font-size: 13px;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-color: rgba(180, 220, 255, 0.85);
-}
-.editor-row-value {
-font-family: ui-monospace, Menlo, monospace;
-font-weight: 700;
-font-size: 13px;
-color: #7fd1ff;
-min-width: 3.5em;
-text-align: right;
-}
-.editor-bar input[type=range] {
--webkit-appearance: none;
-appearance: none;
-width: 100%;
-height: 36px;
-margin: 0;
-background: transparent;
-cursor: pointer;
-}
-.editor-bar input[type=range]:disabled {
-opacity: 0.35;
-cursor: not-allowed;
-}
-.editor-bar input[type=range]::-webkit-slider-runnable-track {
-height: 8px;
-border-radius: 2px;
-background: linear-gradient(90deg, rgba(40, 70, 100, 0.9), rgba(20, 36, 56, 0.95));
-border: 1px solid rgba(127, 209, 255, 0.35);
-}
-.editor-bar input[type=range]::-webkit-slider-thumb {
--webkit-appearance: none;
-appearance: none;
-width: 28px;
-height: 28px;
-margin-top: -11px;
-border-radius: 3px;
-background: linear-gradient(180deg, #b8e8ff, #4aa8e0);
-border: 1px solid #e8f7ff;
-box-shadow: none;
-}
-.editor-bar input[type=range]::-moz-range-track {
-height: 8px;
-border-radius: 2px;
-background: linear-gradient(90deg, rgba(40, 70, 100, 0.9), rgba(20, 36, 56, 0.95));
-border: 1px solid rgba(127, 209, 255, 0.35);
-}
-.editor-bar input[type=range]::-moz-range-thumb {
-width: 28px;
-height: 28px;
-border-radius: 3px;
-background: linear-gradient(180deg, #b8e8ff, #4aa8e0);
-border: 1px solid #e8f7ff;
-box-shadow: none;
-}
-.editor-actions {
-display: flex;
-gap: 10px;
-padding-top: 2px;
-}
-.editor-actions .editor-action,
-.editor-bar .editor-action {
-flex: 1;
-min-height: 44px;
-padding: 0 12px;
-border-radius: 3px;
-border: 1px solid rgba(127, 209, 255, 0.4);
-background: rgba(12, 22, 38, 0.9);
-color: #cfe8ff;
-font: 700 13px/1 "Rajdhani", "Segoe UI", sans-serif;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-cursor: pointer;
-}
-.editor-actions .editor-action:active { background: rgba(40, 70, 100, 0.7); }
-.editor-bar .small-button,
-.editor-icon {
-display: grid;
-place-items: center;
-width: 44px;
-height: 44px;
-flex: none;
-padding: 0;
-border: 1px solid rgba(127, 209, 255, 0.4);
-border-radius: 3px;
-background: rgba(12, 22, 38, 0.9);
-color: #cfe8ff;
-cursor: pointer;
-}
-.editor-icon svg {
-width: 18px;
-height: 18px;
-fill: none;
-stroke: currentColor;
-stroke-width: 2;
-stroke-linecap: round;
-stroke-linejoin: round;
-}
-.editor-bar label {
-display: flex;
-flex-direction: column;
-align-items: stretch;
-gap: 8px;
-width: 100%;
-}
+.editor-bar .editor-action { border: 1px solid rgba(127, 209, 255, 0.4); background: rgba(12, 22, 38, 0.9); color: #cfe8ff; }
+.editor-bar .editor-action:active { background: rgba(40, 70, 100, 0.7); }
+.editor-icon { display: grid; place-items: center; width: 32px; height: 32px; flex: none; padding: 0; border: 1px solid rgba(127, 209, 255, 0.4); border-radius: 2px; background: rgba(12, 22, 38, 0.9); color: #cfe8ff; cursor: pointer; }
+.editor-icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.editor-bar label { display: flex; flex-direction: column; align-items: stretch; gap: 4px; width: 100%; }
 .editor-bar label svg { display: none; }
-.editor-actions .primary {
-flex: 1;
-min-height: 44px;
-padding: 0 14px;
-border-radius: 3px;
-font: 700 13px/1 "Rajdhani", "Segoe UI", sans-serif;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-}
-.editor-grip, .editor-fold {
-display: grid;
-place-items: center;
-width: 36px;
-height: 36px;
-flex: none;
-border: 1px solid rgba(127, 209, 255, 0.25);
-border-radius: 3px;
-background: rgba(255, 255, 255, 0.04);
-color: #9ec9e8;
-cursor: grab;
-padding: 0;
-}
-.editor-grip svg { width: 18px; height: 18px; fill: currentColor; }
-.editor-fold svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.15s; }
-.editor-grip:active { cursor: grabbing; color: #7fd1ff; border-color: #7fd1ff; }
-.editor-hint { color: rgba(160, 200, 230, 0.7); }
-.layout-editor .editing {
-outline: 2px solid #7fd1ff;
-outline-offset: 3px;
-border-color: #7fd1ff !important;
-}
+.editor-fold { display: grid; place-items: center; width: 26px; height: 26px; flex: none; border: 1px solid rgba(127, 209, 255, 0.25); border-radius: 2px; background: rgba(255, 255, 255, 0.04); color: #9ec9e8; cursor: pointer; padding: 0; }
+.editor-fold svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: square; transition: transform 0.15s; }
+.editor-grip { display: none; }
+.layout-editor .editing { outline: 2px solid #7fd1ff; outline-offset: 3px; }
 @media (orientation: portrait) {
 .layout-editor::before {
 content: "Turn your device sideways to edit the layout.";
@@ -1869,3 +1723,26 @@ border-radius: 4px;
 white-space: nowrap;
 pointer-events: none;
 }
+
+/* ---- Fork: opacity model (layer opacity for Global, --op per control for Individual) ---- */
+.touch-layer [data-control] { opacity: var(--op, 1); }
+.touch-layer .touch-dpad [data-control] { opacity: 1; }
+.touch-layer .touch-stick { opacity: calc(var(--op, 1) * 0.65); }
+.touch-layer .touch-stick.active { opacity: var(--op, 1); }
+.touch-layer.modern .touch-stick { opacity: calc(var(--op, 1) * 0.7); }
+.touch-layer.modern .touch-stick.active { opacity: var(--op, 1); }
+.layout-editor .touch-layer .touch-stick,
+.layout-editor .touch-layer.modern .touch-stick { opacity: calc(var(--op, 1) * 0.9); }
+/* ---- Fork: Halo HUD glyphs ---- */
+.touch-button .glyph { display: flex; align-items: center; justify-content: center; }
+.touch-button .glyph svg { width: 100%; height: 100%; display: block; }
+.touch-layer.xbox .touch-button .glyph { width: 56%; height: 56%; }
+.touch-layer.xbox .touch-button.trigger .glyph { width: 30%; height: 60%; }
+.touch-layer.xbox .touch-button.system .glyph { width: 30%; height: 70%; }
+.touch-layer.xbox .touch-dpad .touch-button .glyph { width: 70%; height: 70%; }
+.touch-dpad .touch-button::after { content: none; display: none; }
+.touch-layer.xbox .badge {
+position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
+font: 800 9px/1 Orbitron, "Rajdhani", sans-serif; color: #06101c; background: #7fd1ff; border-radius: 2px;
+}
+.touch-layer .touch-button { color: #bfe6ff; }
