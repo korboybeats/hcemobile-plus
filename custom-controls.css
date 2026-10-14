@@ -1,10 +1,4 @@
-/* Custom touch-control styling for this fork.
- * Layout position/size/opacity: use the in-game Edit layout editor
- * (saved in localStorage key halo-web-settings).
- * Put look overrides below; iterate next. Examples:
- *
- * .touch-layer.modern .touch-button.m-fire { ... }
- * .touch-button[data-control="jump"],
- * .touch-button[data-control="a"] { ... }
- * .touch-stick, .touch-knob { ... }
+/* Optional extra touch overrides for this fork.
+ * Primary Halo/UNSC restyle + editor panel live in style.css and input.js.
+ * Layout position/size/opacity: in-game Edit layout (halo-web-settings).
  */
