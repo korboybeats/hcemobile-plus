@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="style.css?h=ad61bdc6a5">
 <link rel="stylesheet" href="custom-controls.css">
 <script src="i18n.js?h=23b7f2c466"></script>
-<style>.layout-stack{display:flex;flex-direction:column;align-items:stretch;gap:6px}.layout-stack>.button{width:100%;margin:0;box-sizing:border-box}.sens-nudge{padding:0 9px;min-width:28px;font-size:1em;line-height:1.6;margin:0 2px}</style>
+<style>.layout-stack{display:flex;flex-direction:column;align-items:stretch;gap:6px}.layout-stack>.button{width:100%;margin:0;box-sizing:border-box}.row .button.sens-nudge,.game-menu .panel .button.sens-nudge{flex:0 0 26px;width:26px!important;min-width:26px;padding:0;margin:0 1px;font-size:13px;line-height:1}.row:has(.sens-nudge){flex-direction:row!important;align-items:center!important;flex-wrap:nowrap}.game-menu .panel{max-height:calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:calc(14px + env(safe-area-inset-bottom))!important}.game-menu{align-items:center}body.unified-edit #layout-editor{background:transparent!important}body.unified-edit #hud-editor{pointer-events:none;background:none!important}body.unified-edit #hud-editor .hud-piece,body.unified-edit #hud-editor .editor-bar{pointer-events:auto}body.unified-edit #hud-editor [data-done]{display:none}</style>
 <script>document.addEventListener("click",function(ev){var b=ev.target.closest&&ev.target.closest(".sens-nudge");if(!b)return;ev.preventDefault();var r=document.getElementById(b.dataset.for);if(!r)return;var v=Math.round((parseFloat(r.value)+parseFloat(b.dataset.d))*100)/100;v=Math.min(parseFloat(r.max),Math.max(parseFloat(r.min),v));r.value=v.toFixed(2);r.dispatchEvent(new Event("input",{bubbles:!0}))},!0);</script>
 </head>
 <body>
@@ -757,8 +757,8 @@
       <select id="menu-layout">
         <option value="modern">Modern (like mobile shooters)</option>
         <option value="xbox">Original Xbox controller</option>
-      </select></label>
-    <div class="row buttons layout-stack"><button type="button" class="button" id="menu-edit-layout">Edit layout</button><button type="button" class="button" id="menu-edit-hud">Customize HUD</button></div>
+      </select>
+      <button type="button" class="button small-button" id="menu-edit-layout">Edit layout</button></label>
     <details class="keys-box" id="menu-keys-box">
       <summary>Keyboard controls</summary>
       <div class="key-list" id="menu-keys"></div>
