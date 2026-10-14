@@ -1820,3 +1820,8 @@ body:has(#layout-editor:not([hidden])) .chat-feed { visibility: hidden !importan
 .game-menu .panel > .row.buttons:last-child > .button { width: 100%; height: 32px; min-height: 32px; overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 520px) { .game-menu .panel > .row.buttons:last-child { grid-template-columns: 1fr 1fr; } }
 .game-menu .keys-box, .game-menu .keys-box summary { text-align: left; align-items: flex-start; }
+
+.fps.fps-nobg{background:transparent!important;box-shadow:none!important;border-color:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;text-shadow:0 0 2px #000,0 1px 2px #000,0 0 4px rgba(0,0,0,.8)}
+body.editing-layout .fps{pointer-events:auto!important;z-index:2147483000!important;touch-action:none;cursor:move;outline:1.25px dashed rgba(120,200,255,.9);outline-offset:2px}
+body.editing-layout .fps[hidden]{display:block!important;min-width:60px;min-height:1.2em}
+body.editing-layout .fps:empty::before{content:"FPS / ping"}
