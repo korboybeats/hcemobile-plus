@@ -1756,3 +1756,7 @@ body.editing-layout .layout-editor .touch-layer { visibility: visible !important
 .menu-button { border-radius: 3px; border: 1.5px solid rgba(127, 209, 255, 0.5); background: rgba(6, 12, 22, 0.55); color: #bfe6ff; box-shadow: none; }
 .menu-button:active { background: rgba(127, 209, 255, 0.8); color: #06101c; }
 .option-button[aria-pressed="false"] { color: rgba(127, 209, 255, 0.4); border-color: rgba(127, 209, 255, 0.2); }
+.editor-bar.element-panel { width: min(220px, calc(100vw - 16px)); z-index: 41; }
+.editor-bar.element-panel[hidden] { display: none; }
+.editor-bar.element-panel .editor-title { text-transform: capitalize; }
+.editor-bar.element-panel .editor-fold svg path { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
