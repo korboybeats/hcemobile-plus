@@ -640,7 +640,7 @@ body.playing .layout-editor { background: rgba(5, 6, 9, 0.45); }
 /* Halo / UNSC edit-layout panel (compact) */
 .editor-bar {
 position: absolute; z-index: 40;
-left: 50%; top: calc(8px + env(safe-area-inset-top));
+left: 50%; top: calc(48px + env(safe-area-inset-top)); /* plus14: clear the Score/Pause buttons */
 transform: translateX(-50%);
 display: flex; flex-direction: column; align-items: stretch;
 width: min(268px, calc(100vw - 16px));
@@ -1762,7 +1762,13 @@ body.editing-layout .layout-editor .touch-layer { visibility: visible !important
 .editor-bar.element-panel .editor-fold svg path { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
 
 /* Fork plus12: thin, size-independent outlines (border divided by the control's scale, SVG strokes non-scaling) */
-.touch-layer [data-control], .touch-layer [data-control] *, .touch-layer .touch-stick, .touch-layer .touch-stick * { border-width: calc(1px / var(--s, 1)) !important; }
+/* plus14: uniform ring. Borders are snapped/floored to device pixels, so 1px/scale rounded to 0 on big (fire/zoom) buttons.
+   Ring is now an inset box-shadow (not pixel-snapped): spread 1.25px/--s, then the element's own `scale` multiplies it back => 1.25px on screen for every size. */
+.touch-layer .touch-button, .touch-layer .touch-stick, .touch-layer .touch-stick > *, #menu-button, #chat-button, #mod-button, #menu-options .menu-button {
+  border-color: transparent !important; border-width: 0 !important;
+  box-shadow: inset 0 0 0 calc(1.25px / var(--s, 1)) var(--ring, rgba(127, 209, 255, 0.6)) !important; }
+.touch-layer .touch-button.pressed, #menu-options .menu-button:active { --ring: #b8e8ff; }
+.touch-layer .badge { border-width: 1px !important; }
 .touch-layer [data-control] svg *, .touch-layer .touch-stick svg * { vector-effect: non-scaling-stroke; stroke-width: 1.6px; }
 /* plus13: HUD buttons editable in layout mode */
 body.editing-layout .hud-edit { z-index: 31 !important; cursor: grab; touch-action: none; }
