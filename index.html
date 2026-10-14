@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HCEMobile">
+<meta name="theme-color" content="#0b0d12">
+<title>HCEMobile - Halo: Combat Evolved Mobile</title>
+<link rel="manifest" href="manifest.webmanifest?h=a5d1b19b77">
+<link rel="apple-touch-icon" href="icons/icon-180.png?h=e05eb6fdb3">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png?h=0ac2ce4db8">
+<link rel="stylesheet" href="style.css?h=ad61bdc6a5">
+<link rel="stylesheet" href="custom-controls.css">
+<script src="i18n.js?h=23b7f2c466"></script>
+</head>
+<body>
+<div id="backdrop" class="backdrop" aria-hidden="true"></div>
+<canvas id="screen" aria-label="Game"></canvas>
+
+<section id="welcome" class="welcome" hidden aria-labelledby="welcome-title">
+  <div class="welcome-lang"><button type="button" class="lang-button" data-lang-toggle translate="no"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span data-lang-label>Español</span></button></div>
+  <div class="welcome-inner">
+    <p class="kicker">Combat Evolved · on your phone</p>
+    <h1 id="welcome-title" class="title">Halo CE <span>Mobile</span></h1>
+    <p class="tagline">Install the app to play full screen, keep your saved games, and play offline.</p>
+    <div class="install-buttons">
+      <button type="button" class="button hero" id="install-ios">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg>
+        Install on iPhone / iPad</button>
+      <button type="button" class="button hero" id="install-droid">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M6 5h12M6 18h12"/></svg>
+        Install on Android</button>
+    </div>
+    <a class="discord-banner welcome-discord" href="https://discord.gg/HCEMobile" target="_blank" rel="noopener"><span class="discord-top"><span class="discord-tile"><svg class="discord-logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.028C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></span><span class="discord-copy"><strong>Join the official HCEMobile Discord server!</strong><span class="discord-ask"><span>New here?</span> <span>Need help?</span> <span>Looking for games?</span></span></span></span><span class="discord-cta"><svg class="discord-mini" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.028C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg><span>Discord.gg/HCEMobile</span></span></a>
+    <a class="guide-bar guide-link welcome-guide-bar" href="guide/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C6.5 4.2 9.3 4.2 12 6c2.7-1.8 5.5-1.8 8-.5V19c-2.5-1.3-5.3-1.3-8 .5-2.7-1.8-5.5-1.8-8-.5z"/><path d="M12 6v13.5"/></svg><span>Getting Started Guide</span><svg class="guide-bar-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    <button type="button" class="link-button" id="welcome-skip">Continue in the browser</button>
+    <p class="welcome-legal">An unofficial fan project created under Microsoft's Game Content Usage Rules using assets
+      from Halo: Combat Evolved. Not endorsed by or affiliated with Microsoft. Halo © Microsoft Corporation.</p>
+  </div>
+
+  <div id="sheet-ios" class="sheet" hidden role="dialog" aria-labelledby="sheet-ios-title">
+    <h2 id="sheet-ios-title">Add Halo CE Mobile to your Home Screen</h2>
+    <ol class="steps">
+      <li><span class="step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5"/><path d="M8 10H6v11h12V10h-2"/></svg></span>
+        <span>Tap <strong>Share</strong> in Safari's toolbar (at the bottom on iPhone, at the top on iPad).</span></li>
+      <li><span class="step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg></span>
+        <span>Scroll down and tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</span></li>
+      <li><span class="step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M8 12l3 3 5-6"/></svg></span>
+        <span>Open <strong>HCEMobile</strong> from your Home Screen. It runs full screen and keeps your data.</span></li>
+    </ol>
+    <p class="small">In Chrome or Edge on iPhone, Share is at the top right. iOS only lets you add a site to the Home Screen yourself, so you only need to do this once.</p>
+    <button type="button" class="button primary" data-close>Got it</button>
+  </div>
+
+  <div id="sheet-droid" class="sheet" hidden role="dialog" aria-labelledby="sheet-droid-title">
+    <h2 id="sheet-droid-title">Install the app</h2>
+    <ol class="steps">
+      <li><span class="step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></span>
+        <span>In Chrome, tap the <strong>⋮</strong> menu at the top right.</span></li>
+      <li><span class="step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5"/><path d="M5 20h14"/></svg></span>
+        <span>Tap <strong>Install app</strong> (or <strong>Add to Home screen</strong>), then <strong>Install</strong>.</span></li>
+      <li><span class="step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M8 12l3 3 5-6"/></svg></span>
+        <span>Open <strong>HCEMobile</strong> from your home screen or app drawer.</span></li>
+    </ol>
+    <p class="small">In Samsung Internet, tap ☰, then <strong>Add page to</strong>, then <strong>Home screen</strong>.</p>
+    <button type="button" class="button primary" data-close>Got it</button>
+  </div>
+</section>
+<div id="touch" class="touch-layer" hidden></div>
+<div id="fps" class="fps" hidden></div>
+<div id="photo-bar" class="photo-bar" hidden>
+  <button type="button" id="photo-shot" class="photo-button" aria-label="Take a picture"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg></button>
+  <button type="button" id="photo-exit" class="photo-button" aria-label="Show the HUD and controls"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+</div>
+<div id="photo-ready" class="photo-ready" hidden><span>Picture taken</span> <button type="button" class="button small-button primary" id="photo-save">Save</button></div>
+<div id="photo-flash" class="photo-flash" hidden></div>
+
+<main id="launcher">
+  <section class="panel">
+    <div class="top-bar">
+      <button type="button" class="lang-button" data-lang-toggle translate="no"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span data-lang-label>Español</span></button>
+    </div>
+    <a class="discord-banner" href="https://discord.gg/HCEMobile" target="_blank" rel="noopener"><span class="discord-top"><span class="discord-tile"><svg class="discord-logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.028C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></span><span class="discord-copy"><strong>Join the official HCEMobile Discord server!</strong><span class="discord-ask"><span>New here?</span> <span>Need help?</span> <span>Looking for games?</span></span></span></span><span class="discord-cta"><svg class="discord-mini" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.028C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg><span>Discord.gg/HCEMobile</span></span></a>
+    <a class="guide-bar guide-link" href="guide/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C6.5 4.2 9.3 4.2 12 6c2.7-1.8 5.5-1.8 8-.5V19c-2.5-1.3-5.3-1.3-8 .5-2.7-1.8-5.5-1.8-8-.5z"/><path d="M12 6v13.5"/></svg><span>Getting Started Guide</span><svg class="guide-bar-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    <header>
+      <h1 class="title">Halo CE <span>Mobile</span></h1>
+      <p class="subtitle">Halo: Combat Evolved, rebuilt from its decompilation to run in your browser.</p>
+    </header>
+
+    <section id="news" class="news" aria-labelledby="news-title" hidden>
+      <h2 id="news-title">News</h2>
+      <div id="news-list" class="news-list"></div>
+      <button type="button" class="link-button news-more" id="news-more" hidden></button>
+    </section>
+
+    <div id="checks" class="checks" aria-live="polite"></div>
+    <p id="controller-status" class="hint controller-status"></p>
+
+    <div id="install-hint" class="hint" hidden>
+      <strong>Install the app</strong> to play full screen and keep your data.
+      <button type="button" class="button small-button" id="install-hint-how">How</button>
+    </div>
+    <div id="install-android" class="hint" hidden>
+      <strong>Install the app</strong> to play full screen and keep your data.
+      <button type="button" class="button small-button" id="install-button" hidden>Install app</button>
+      <span id="install-android-menu"><button type="button" class="button small-button" id="install-android-how">How</button></span>
+    </div>
+
+    <div id="step-data" class="step">
+      <h2>Game data</h2>
+      <p id="data-intro">To play, choose your own Xbox disc image of Halo: Combat Evolved (<code>.iso</code> or
+        <code>.xiso</code>, a verified copy). The game's <code>maps</code> folder is copied into the app's private storage
+        (up to 1.8 GB), after which you can delete the disc image. Nothing is uploaded.</p>
+      <div id="games" class="games" role="radiogroup" aria-label="Copies of the game"></div>
+      <label class="button primary" id="add-label" for="iso-file">Choose disc image…</label>
+      <p class="small link-switch"><button type="button" class="link-button" id="link-open">Load from URL instead</button></p>
+      <input id="iso-file" type="file" accept=".iso,.xiso,application/octet-stream,application/x-iso9660-image" hidden>
+      <form id="link-form" class="link-form" hidden autocomplete="off">
+        <input id="link-url" type="url" inputmode="url" placeholder="https://… direct link to your .iso" autocapitalize="off" spellcheck="false">
+        <button type="submit" class="button primary" id="link-load">Load</button>
+        <p class="small">A direct download link to your own disc image, for example from Dropbox, Amazon S3, Cloudflare
+          R2 or your own web server. Only the game's maps folder (about 1.8 GB) is downloaded. Google Drive and other
+          sharing pages don't work.</p>
+        <p class="small link-switch"><button type="button" class="link-button" id="link-cancel">Choose a file instead</button></p>
+      </form>
+      <div id="import-banner" class="import-banner" hidden role="alert"></div>
+      <div id="progress" class="progress" hidden aria-live="polite">
+        <div class="progress-head"><strong id="progress-title"></strong><span id="progress-percent"></span></div>
+        <div class="bar" role="progressbar" aria-labelledby="progress-title"><div id="progress-fill"></div></div>
+        <p id="progress-text"></p>
+      </div>
+      <p class="small">Only verified copies of Halo: Combat Evolved for the original Xbox can be added. You can add more
+        than one and choose which to play; each keeps its own saved games.</p>
+    </div>
+
+    <div id="step-play" class="step" hidden>
+      <button id="play" class="button primary" type="button">Play</button>
+      <p class="small" id="data-summary"></p>
+      <p class="small moving-in">Coming from the old HCEMobile app? <label class="link-button" for="import-saves-file">Restore
+        the saved games you exported from it</label>.</p>
+    </div>
+
+    <section class="online" aria-labelledby="online-title">
+      <h2 id="online-title">Play online</h2>
+      <p class="hint locked" id="online-locked">Sign in or create a free account to play online. The campaign, split
+        screen and System Link don't need one.</p>
+      <div class="account" id="account">
+        <h3>Your account</h3>
+        <div id="account-out">
+          <p class="small">One free account works on every device you play on. It gives you:</p>
+          <ul class="small account-perks">
+            <li>A unique gamertag that other players see</li>
+            <li>Matchmaking with ranks from 1 to 50 in each ranked playlist</li>
+            <li>Custom Games lobbies you can host, join and invite friends to</li>
+            <li>A friends list, private messages and clans</li>
+            <li>Lobby and global chat</li>
+          </ul>
+          <form id="account-form" class="account-form" data-mode="signin" autocomplete="on" novalidate>
+            <div class="row account-fields">
+              <input id="account-gamertag" name="username" type="text" maxlength="11" placeholder="Gamertag" autocomplete="username"
+                autocapitalize="off" spellcheck="false" data-modes="signin create">
+              <input id="account-email" hidden name="email" type="email" maxlength="254" placeholder="Email address" autocomplete="email"
+                autocapitalize="off" spellcheck="false" data-modes="create recover reset">
+              <input id="account-code" hidden type="text" maxlength="12" placeholder="Code from the email" autocomplete="one-time-code"
+                autocapitalize="characters" spellcheck="false" data-modes="reset">
+              <input id="account-password" name="password" type="password" maxlength="128" placeholder="Password"
+                autocomplete="current-password" data-modes="signin create reset">
+              <input id="account-confirm" hidden type="password" maxlength="128" placeholder="Confirm password" autocomplete="new-password"
+                data-modes="create reset">
+            </div>
+            <p class="small" id="account-note" hidden></p>
+            <div class="row">
+              <button type="submit" class="button primary" id="account-submit">Sign in</button>
+              <button type="button" class="button" id="account-to-create" data-modes="signin">Create account</button>
+              <button type="button" class="button" id="account-to-signin" hidden data-modes="create recover reset">Back to sign in</button>
+            </div>
+            <p class="small" data-modes="signin"><button type="button" class="link-button" id="account-to-recover">Forgot your
+              password or gamertag?</button></p>
+          </form>
+          <p class="small account-error" id="account-error" role="alert" hidden></p>
+        </div>
+        <div id="account-in" hidden>
+          <p class="room-line">Signed in as <strong id="account-name"></strong>
+            <button type="button" class="button small-button" id="account-friends">Friends &amp; chat<span
+              class="badge" id="account-friends-badge" hidden></span></button>
+            <button type="button" class="button small-button" id="account-settings-toggle" aria-expanded="false">Settings</button>
+            <button type="button" class="button small-button" id="account-signout">Sign out</button></p>
+          <div id="account-settings" class="account-settings" hidden>
+            <form id="account-gamertag-form" class="row account-fields" novalidate>
+              <input id="settings-gamertag" type="text" maxlength="11" autocapitalize="off" spellcheck="false"
+                aria-label="Your gamertag's capitalization">
+              <button type="submit" class="button small-button">Update capitalization</button>
+            </form>
+            <p class="small">You can change the capitalization of your gamertag (bob, Bob, BOB), but not the gamertag itself.</p>
+            <p class="small">Recovery email: <strong id="account-email-shown"></strong></p>
+            <form id="account-email-form" class="row account-fields" novalidate>
+              <input id="settings-email" type="email" maxlength="254" placeholder="New email address" autocomplete="email" autocapitalize="off">
+              <input id="settings-email-password" type="password" maxlength="128" placeholder="Your password" autocomplete="current-password">
+              <button type="submit" class="button small-button">Change email</button>
+            </form>
+            <form id="account-password-form" class="row account-fields" novalidate>
+              <input id="settings-current" type="password" maxlength="128" placeholder="Current password" autocomplete="current-password">
+              <input id="settings-new" type="password" maxlength="128" placeholder="New password" autocomplete="new-password">
+              <input id="settings-confirm" type="password" maxlength="128" placeholder="Confirm new password" autocomplete="new-password">
+              <button type="submit" class="button small-button">Change password</button>
+            </form>
+            <p class="small account-error" id="settings-error" role="alert" hidden></p>
+          </div>
+        </div>
+        <p class="small" id="mm-ranks-line" hidden>Matchmaking ranks: <span id="mm-ranks"></span></p>
+        <p class="small"><a class="history-link" href="games/">Match history &amp; carnage reports</a></p>
+      </div>
+      <div id="online-open" hidden>
+        <p class="small">Matchmaking, Custom Games lobbies, invites and your friends list are all in the game: open
+          Multiplayer, or press Y in the menus for the friends list. This page has your lobby chat, private messages
+          and the global chat.</p>
+        <div id="online-quick" class="row" hidden>
+          <button type="button" class="button primary" id="quick-match">Quick Match</button>
+          <span class="small">Joins the busiest public lobby, or opens your own if none are available.</span>
+        </div>
+        <div class="row" id="online-start" hidden>
+          <button type="button" class="button" id="lobby-create">Open my lobby</button>
+          <label class="inline-check"><input type="checkbox" id="lobby-public-new" checked> Public (listed under Lobbies)</label>
+        </div>
+        <div class="row">
+          <button type="button" class="button" id="online-global">Global chat</button>
+          <span class="small">Talk with everyone playing Halo CE Mobile.</span>
+        </div>
+        <div id="online-room" class="lobby-now" hidden>
+          <p class="room-line"><strong id="lobby-name"></strong> <span class="pill" id="lobby-privacy"></span></p>
+          <p class="small" id="online-status"></p>
+          <p class="small" id="online-names"></p>
+          <div class="row">
+            <button type="button" class="button small-button" id="lobby-invite">Invite friends</button>
+            <button type="button" class="button small-button" id="online-chat">Chat</button>
+            <button type="button" class="button small-button" id="online-leave">Leave</button>
+          </div>
+          <label class="inline-check" id="lobby-public-row"><input type="checkbox" id="lobby-public"> Public (listed under
+            Lobbies). Private lobbies are invite only.</label>
+          <p class="hint" id="online-role" hidden></p>
+        <div class="coop" id="coop-section">
+          <h3>Co-op</h3>
+          <label class="row"><input type="checkbox" id="coop-host"> Host co-op: a friend in this lobby joins as player 2
+            on their own device</label>
+          <p class="small" id="coop-status"></p>
+          <div id="coop-hosts" class="coop-hosts"></div>
+          <p class="small">The host runs the game and streams player 2's view to their friend, who doesn't need the game
+            data. The host chooses Multiplayer &gt; Cooperative Play for the campaign (full game only) or Split Screen,
+            and the friend presses Jump (A) to join as player 2.</p>
+        </div>
+        </div>
+        <div class="lobby" id="lobby-section" hidden>
+          <h3>Lobbies <span id="lobby-count" class="small"></span></h3>
+          <div id="lobby-list" class="lobby-list"></div>
+          <p class="small" id="lobby-empty">There are no public lobbies right now. Quick Match opens your own for others to join.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="features" aria-labelledby="features-title">
+      <h2 id="features-title">Features</h2>
+      <div class="feature-grid">
+        <article class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>
+          <h3>The complete game</h3>
+          <p>The full campaign and multiplayer of Halo: Combat Evolved, running natively from your own disc image.</p>
+        </article>
+        <article class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18l4-5 4 3 4-7 4 4"/><path d="M4 21h16"/></svg>
+          <h3>Matchmaking</h3>
+          <p>Social, Ranked and Experimental playlists, Halo 2-style ranks from 1 to 50, and party searching with your friends.</p>
+        </article>
+        <article class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <h3>Custom Games</h3>
+          <p>Host or browse public lobbies with full game settings: map, game type, score, weapons, shields and more. Join games in progress.</p>
+        </article>
+        <article class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3 3 0 010 7M18 14.5c1.8.9 3 2.9 3 5.5"/></svg>
+          <h3>Friends and clans</h3>
+          <p>See where your friends are and join them in one tap. Private messages, invites, and clans with Halo 2 ranks.</p>
+        </article>
+        <article class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v10H9l-4 4v-4H4z"/><path d="M8 9h8M8 12h5"/></svg>
+          <h3>Chat</h3>
+          <p>Lobby chat, global chat and private messages, available in the game and on this page.</p>
+        </article>
+        <article class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="5"/><path d="M7 10v4M5 12h4"/><circle cx="16" cy="11" r="1"/><circle cx="18" cy="13" r="1"/></svg>
+          <h3>Your controls</h3>
+          <p>Two touch layouts, including an Original Xbox controller, fully editable. Xbox, PlayStation, Switch Pro, MFi and Backbone controllers, or keyboard and mouse.</p>
+        </article>
+        <article class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2 20c0-3 2.7-5 6-5s6 2 6 5M14 15.2c.6-.1 1.3-.2 2-.2 3.3 0 6 2 6 5"/></svg>
+          <h3>Co-op and local play</h3>
+          <p>Split screen for up to four players, System Link, and remote co-op that streams player 2's view to a friend's device.</p>
+        </article>
+        <article class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg>
+          <h3>Play anywhere</h3>
+          <p>Install it on iPhone, iPad, Android or your computer. Plays full screen and offline, at up to your screen's native resolution.</p>
+        </article>
+        <article class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg>
+          <h3>Saves and updates</h3>
+          <p>Keep several copies of the game, each with its own saved games. Export and restore them anytime; updates install automatically.</p>
+        </article>
+      </div>
+    </section>
+
+    <details class="settings">
+      <summary>Settings and data</summary>
+      <label class="row"><input type="checkbox" id="opt-touch"> Touch controls</label>
+      <label class="row">Touch layout
+        <select id="opt-layout">
+          <option value="modern">Modern (like mobile shooters)</option>
+          <option value="xbox">Original Xbox controller</option>
+        </select>
+        <button type="button" class="button small-button" id="edit-layout">Edit layout</button></label>
+      <label class="row">Aim sensitivity <input type="range" id="opt-look" min="0.4" max="3" step="0.1"></label>
+      <details class="keys-box">
+        <summary>Keyboard controls</summary>
+        <p class="small">Click an action, then press the key or mouse button you want for it (for Left click, click the waiting button again). A key already in use swaps with it; Esc cancels. Enter, Backspace and the arrow keys stay as the menus' keys.</p>
+        <div class="key-list" id="opt-keys"></div>
+      </details>
+      <label class="row"><input type="checkbox" id="opt-silent" checked> Play sound when the phone is on silent (pauses music from other apps)</label>
+      <label class="row"><input type="checkbox" id="opt-vsync" checked> Sync to the display (smoother, saves battery)</label>
+      <label class="row"><input type="checkbox" id="opt-fps"> Show the frame rate</label>
+      <label class="row"><input type="checkbox" id="opt-ping"> Show the ping (online games)</label>
+      <label class="row"><input type="checkbox" id="opt-timing"> Show performance details (for bug reports)</label>
+      <label class="row">Resolution
+        <select id="opt-resolution">
+          <option value="auto">Automatic (480p on phones, 360p on slow ones, up to 1080p on computers)</option>
+          <option value="360">360p (fastest, for slow phones)</option>
+          <option value="480">480p (original Xbox)</option>
+          <option value="720">720p</option>
+          <option value="1080">1080p</option>
+          <option value="1440">1440p</option>
+          <option value="native">Native screen resolution</option>
+        </select></label>
+      <label class="row"><input type="checkbox" id="opt-sharp-textures"> Sharper textures at an angle (takes effect on the next launch)</label>
+      <label class="row"><input type="checkbox" id="opt-aim-smoothing"> Aim smoothing <span class="small">(off: the view follows your finger or mouse at once, with no blending between the game's updates)</span></label>
+      <label class="row"><input type="checkbox" id="opt-small-textures"> Lower-resolution textures (uses less graphics
+        memory; try this if a level goes black or the game stops)</label>
+      <label class="row">Drawing path
+        <select id="opt-draw-path">
+          <option value="auto">Automatic</option>
+          <option value="texture">A (constants in a texture)</option>
+          <option value="block">B (constants in a buffer)</option>
+          <option value="uniforms">C (standard)</option>
+        </select></label>
+      <p class="small">If models or the menu's ship look stretched or broken, try A, B and C (each takes effect on the next launch) and tell us which looks right.</p>
+      <label class="row"><input type="checkbox" id="opt-fog"> Distance fog <span class="small">(off: no haze with distance; try turning it off if a level's ground or water is one flat colour, and tell us; takes effect on the next launch)</span></label>
+      <p class="small">While the game is running, the pause menu's "Report a graphics problem" sends us a picture of what it's showing, with what your phone's graphics chip gets wrong.</p>
+      <label class="row"><input type="checkbox" id="opt-gldebug"> Log graphics errors (for bug reports; slower)</label>
+      <p class="small">Custom TURN relay (optional): helps online play on networks that block direct connections, such as
+        some mobile carriers.</p>
+      <label class="row">TURN server <input type="text" id="opt-turn-url" placeholder="turn:host:3478"></label>
+      <label class="row">TURN user <input type="text" id="opt-turn-user" autocomplete="off"></label>
+      <label class="row">TURN password <input type="password" id="opt-turn-password" autocomplete="off"></label>
+      <div class="row buttons">
+        <button type="button" class="button" id="export-saves">Export saved games</button>
+        <label class="button" for="import-saves-file">Restore saved games…</label>
+        <input id="import-saves-file" type="file" accept=".zip,application/zip" hidden>
+        <button type="button" class="button" id="show-log">Show log</button>
+        <button type="button" class="button danger" id="delete-data">Delete all game data</button>
+      </div>
+      <p class="small" id="storage-summary"></p>
+      <p class="small" id="version"></p>
+    </details>
+
+    <p class="legal owner-credit">Site owned and operated by
+      <a href="https://x.com/BanTrev" target="_blank" rel="noopener">Trevor</a>.</p>
+    <p class="legal credits"><strong>Credits.</strong> Halo CE Mobile is built on
+      <a href="https://github.com/cybersecurity/halo-ce-universal" target="_blank" rel="noopener">halo-ce-universal</a>
+      by cybersecurity (the Linux, Windows and Android ports), which starts from the Halo: Combat Evolved decompilation of
+      <a href="https://github.com/punpckhdq/halo" target="_blank" rel="noopener">punpckhdq/halo</a> and
+      <a href="https://github.com/bnunu/halo-1" target="_blank" rel="noopener">bnunu/halo-1</a>.
+      Fonts: Orbitron and Rajdhani (SIL Open Font License).</p>
+    <p class="legal">Halo CE Mobile is an unofficial fan project created under Microsoft's
+      "<a href="https://www.xbox.com/en-US/developers/rules" target="_blank" rel="noopener">Game Content Usage Rules</a>"
+      using assets from Halo: Combat Evolved. It is not endorsed by or affiliated with Microsoft, Xbox Game Studios or
+      Bungie. Halo © Microsoft Corporation. No game data is included; you need your own copy of the game.</p>
+  </section>
+</main>
+
+<button type="button" id="menu-button" class="menu-button" aria-label="Menu" hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  <span id="chat-unread" class="unread" hidden></span>
+</button>
+<div id="menu-options" class="menu-options" hidden>
+  <button type="button" id="menu-scene" class="menu-button option-button" aria-pressed="true" aria-label="Background">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 15l5-4 4 3 3-2 6 4"/><circle cx="15.5" cy="9" r="1.3"/>
+      <path class="off-slash" d="M3 3l18 18"/></svg>
+  </button>
+  <button type="button" id="menu-music" class="menu-button option-button" aria-pressed="true" aria-label="Music">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>
+      <path class="off-slash" d="M3 3l18 18"/></svg>
+  </button>
+</div>
+<button type="button" id="chat-button" class="menu-button chat-button" aria-label="Friends and chat" hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="9" r="3"/><path d="M3 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M14 3.5h7v5.5h-3.2L15.5 11V9H14z"/></svg>
+  <span id="chat-button-unread" class="unread" hidden></span>
+</button>
+<button type="button" id="mod-button" class="menu-button mod-button" aria-label="Moderator panel" hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M9 12l2 2 4-4"/></svg>
+  <span id="mod-button-badge" class="unread" hidden></span>
+</button>
+<div id="mod" class="chat mod-panel" hidden role="dialog" aria-label="Moderator panel">
+  <div class="social-head">
+    <div class="tabs" role="tablist" aria-label="Moderator panel">
+      <button type="button" role="tab" class="tab" data-mod-tab="players">Players</button>
+      <button type="button" role="tab" class="tab" data-mod-tab="server">Server</button>
+      <button type="button" role="tab" class="tab" data-mod-tab="fun">Fun</button>
+      <button type="button" role="tab" class="tab" data-mod-tab="owner" id="mod-tab-owner" hidden>Owner</button>
+    </div>
+    <button type="button" class="icon-button" id="mod-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+
+  <section class="pane mod-pane" id="mod-pane-players" role="tabpanel">
+    <form id="mod-find" class="chat-form" autocomplete="off" novalidate>
+      <input id="mod-find-input" type="text" maxlength="11" placeholder="Find a player by gamertag" autocapitalize="off"
+        spellcheck="false" enterkeyhint="search">
+      <button type="submit" class="button primary small-button">Find</button>
+    </form>
+    <div class="mod-scroll">
+      <h3 class="mod-h" id="mod-here-title">In this lobby</h3>
+      <div id="mod-here" class="mod-list"></div>
+      <div id="mod-player" class="mod-card" hidden>
+        <div class="mod-card-head">
+          <span class="mod-name" id="mod-player-name"></span>
+          <span class="mod-role" id="mod-player-role"></span>
+          <button type="button" class="button small-button" id="mod-player-lookup">Look up</button>
+        </div>
+        <div class="mod-fields">
+          <input id="mod-reason" type="text" maxlength="200" placeholder="Reason or message" autocomplete="off">
+          <select id="mod-duration" aria-label="For how long">
+            <option value="10m">10 minutes</option>
+            <option value="1h" selected>1 hour</option>
+            <option value="1d">1 day</option>
+            <option value="3d">3 days</option>
+            <option value="1w">1 week</option>
+            <option value="30d">30 days</option>
+            <option value="perm">Permanent</option>
+          </select>
+        </div>
+        <div class="mod-actions">
+          <button type="button" class="button small-button" data-mod-act="warn">Warn</button>
+          <button type="button" class="button small-button" data-mod-act="kick">Kick</button>
+          <button type="button" class="button small-button" data-mod-act="mute">Mute</button>
+          <button type="button" class="button small-button" data-mod-act="unmute">Unmute</button>
+          <button type="button" class="button small-button danger" data-mod-act="ban">Ban</button>
+          <button type="button" class="button small-button" data-mod-act="unban">Unban</button>
+          <button type="button" class="button small-button" data-mod-act="flags">Anti-cheat flags</button>
+          <button type="button" class="button small-button" data-mod-act="closelobby">Close their lobby</button>
+          <button type="button" class="button small-button" data-mod-act="spotlight">Spotlight</button>
+        </div>
+        <div class="mod-actions" id="mod-owner-actions" hidden>
+          <button type="button" class="button small-button" data-mod-act="promote">Make moderator</button>
+          <button type="button" class="button small-button" data-mod-act="demote">Remove moderator</button>
+          <button type="button" class="button small-button" data-mod-act="resetrank">Reset ranks</button>
+          <button type="button" class="button small-button" data-mod-act="rename">Rename</button>
+          <button type="button" class="button small-button" data-mod-act="logout">Sign out everywhere</button>
+          <button type="button" class="button small-button danger" data-mod-act="deleteaccount">Delete account</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pane mod-pane" id="mod-pane-server" role="tabpanel" hidden>
+    <div class="mod-scroll">
+      <h3 class="mod-h">Look at</h3>
+      <div class="mod-actions">
+        <button type="button" class="button small-button" data-mod-cmd="/reports">Reports</button>
+        <button type="button" class="button small-button" data-mod-cmd="/flags">Anti-cheat flags</button>
+        <button type="button" class="button small-button" data-mod-cmd="/lobbies">Lobbies</button>
+        <button type="button" class="button small-button" data-mod-cmd="/online">Who is online</button>
+        <button type="button" class="button small-button" data-mod-cmd="/modlog 30">Staff log</button>
+      </div>
+      <h3 class="mod-h">Handled</h3>
+      <form class="chat-form mod-inline" data-mod-form="/reports done" autocomplete="off">
+        <input type="text" inputmode="numeric" maxlength="8" placeholder="Report number">
+        <button type="submit" class="button small-button">Mark report handled</button>
+      </form>
+      <form class="chat-form mod-inline" data-mod-form="/flags done" autocomplete="off">
+        <input type="text" inputmode="numeric" maxlength="8" placeholder="Flag number">
+        <button type="submit" class="button small-button">Mark flag handled</button>
+      </form>
+      <form class="chat-form mod-inline" data-mod-form="/match" autocomplete="off">
+        <input type="text" maxlength="24" placeholder="Matchmaking game (ROOM:1)" autocapitalize="characters">
+        <button type="submit" class="button small-button">Look at a game</button>
+      </form>
+      <h3 class="mod-h">Global chat</h3>
+      <div class="mod-actions">
+        <button type="button" class="button small-button" data-mod-cmd="/clear">Clear it</button>
+        <button type="button" class="button small-button" data-mod-cmd="/slow 10">Slow mode 10s</button>
+        <button type="button" class="button small-button" data-mod-cmd="/slow 30">Slow mode 30s</button>
+        <button type="button" class="button small-button" data-mod-cmd="/slow off">Slow mode off</button>
+      </div>
+      <h3 class="mod-h">Staff chat</h3>
+      <form class="chat-form mod-inline" data-mod-form="/staff" autocomplete="off">
+        <input type="text" maxlength="200" placeholder="To the staff online">
+        <button type="submit" class="button small-button">Send</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="pane mod-pane" id="mod-pane-fun" role="tabpanel" hidden>
+    <div class="mod-scroll">
+      <p class="small pane-sub" id="mod-fun-where"></p>
+      <h3 class="mod-h">On everyone's screen here</h3>
+      <form class="chat-form mod-inline" id="mod-fun-banner" autocomplete="off">
+        <input type="text" maxlength="60" placeholder="A big message (FINAL ROUND!)">
+        <button type="submit" class="button small-button">Show it</button>
+      </form>
+      <div class="mod-actions">
+        <button type="button" class="button small-button" data-mod-fun="countdown" data-seconds="10">Countdown 10</button>
+        <button type="button" class="button small-button" data-mod-fun="countdown" data-seconds="30">Countdown 30</button>
+        <button type="button" class="button small-button" data-mod-fun="confetti">Confetti</button>
+        <button type="button" class="button small-button" data-mod-fun="fireworks">Fireworks</button>
+        <button type="button" class="button small-button" data-mod-fun="gg">GG</button>
+      </div>
+      <h3 class="mod-h">Event rules for this lobby</h3>
+      <p class="small pane-sub">Everyone in this lobby plays by them, on top of the host's (never in matchmaking).</p>
+      <div class="mod-rules" id="mod-rules">
+        <label><input type="checkbox" data-mod-rule="16"> Big heads</label>
+        <label><input type="checkbox" data-mod-rule="2"> Low gravity</label>
+        <label><input type="checkbox" data-mod-rule="4"> Speed boost</label>
+        <label><input type="checkbox" data-mod-rule="8"> Super jump</label>
+        <label><input type="checkbox" data-mod-rule="1"> Infinite ammo</label>
+        <label><input type="checkbox" data-mod-rule="32"> One-shot kills</label>
+      </div>
+      <div class="mod-actions">
+        <button type="button" class="button small-button primary" id="mod-rules-apply">Apply to the lobby</button>
+        <button type="button" class="button small-button" id="mod-rules-clear">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pane mod-pane" id="mod-pane-owner" role="tabpanel" hidden>
+    <div class="mod-scroll">
+      <h3 class="mod-h">Robot</h3>
+      <p class="small pane-sub" id="mod-robot-note">Morph into a giant robot in Custom Games (not in matchmaking). Everyone in the game sees you. (Or type /robot in a chat.)</p>
+      <div class="mod-actions">
+        <button type="button" class="button small-button" id="mod-robot">Morph into robot</button>
+      </div>
+      <h3 class="mod-h">News</h3>
+      <form id="mod-news-form" class="mod-news-form" autocomplete="off">
+        <input type="text" id="mod-news-title" maxlength="100" placeholder="Headline">
+        <textarea id="mod-news-body" maxlength="2000" rows="5"
+          placeholder="What's new? Leave a blank line between paragraphs."></textarea>
+        <div class="mod-actions">
+          <button type="submit" class="button small-button" id="mod-news-submit">Post</button>
+          <button type="button" class="button small-button" id="mod-news-cancel" hidden>Cancel edit</button>
+        </div>
+      </form>
+      <div id="mod-news-list" class="mod-news-list"></div>
+      <h3 class="mod-h">Everyone online</h3>
+      <form class="chat-form mod-inline" data-mod-form="/announce" autocomplete="off">
+        <input type="text" maxlength="300" placeholder="An announcement">
+        <button type="submit" class="button small-button">Announce</button>
+      </form>
+      <form class="chat-form mod-inline" id="mod-owner-banner" autocomplete="off">
+        <input type="text" maxlength="120" placeholder="An event banner (Hunter Wars night!)">
+        <select aria-label="For how long"><option value="30">30 min</option><option value="60" selected>1 hour</option>
+          <option value="180">3 hours</option><option value="1440">1 day</option><option value="10080">1 week</option></select>
+        <button type="submit" class="button small-button">Put it up</button>
+      </form>
+      <div class="mod-actions">
+        <button type="button" class="button small-button" data-mod-cmd="/banner off">Take the banner down</button>
+      </div>
+      <form class="chat-form mod-inline" data-mod-form="/celebrate" autocomplete="off">
+        <input type="text" maxlength="120" placeholder="Confetti for everyone, with a message">
+        <button type="submit" class="button small-button">Celebrate</button>
+      </form>
+      <form class="chat-form mod-inline" data-mod-form="/motd" autocomplete="off">
+        <input type="text" maxlength="300" placeholder="Message of the day (off to remove)">
+        <button type="submit" class="button small-button">Set</button>
+      </form>
+      <h3 class="mod-h">The server</h3>
+      <div class="mod-actions">
+        <button type="button" class="button small-button" data-mod-cmd="/stats">Numbers</button>
+        <button type="button" class="button small-button" data-mod-cmd="/lockchat on">Lock global chat</button>
+        <button type="button" class="button small-button" data-mod-cmd="/lockchat off">Unlock global chat</button>
+        <button type="button" class="button small-button" data-mod-cmd="/maintenance off">Maintenance off</button>
+        <button type="button" class="button small-button" data-mod-cmd="/build">Rated builds</button>
+        <button type="button" class="button small-button" data-mod-cmd="/build clear">Rate every build</button>
+      </div>
+      <form class="chat-form mod-inline" data-mod-form="/maintenance on" data-confirm="Stop online play for everyone but staff?" autocomplete="off">
+        <input type="text" maxlength="200" placeholder="Maintenance message">
+        <button type="submit" class="button small-button danger">Maintenance on</button>
+      </form>
+      <form class="chat-form mod-inline" data-mod-form="/build add" autocomplete="off">
+        <input type="text" maxlength="16" placeholder="Build to rate (1.2.3)">
+        <button type="submit" class="button small-button">Add build</button>
+      </form>
+    </div>
+  </section>
+
+  <pre id="mod-output" class="mod-output" aria-live="polite" hidden></pre>
+</div>
+<div id="fun-layer" class="fun-layer" aria-live="polite">
+  <div id="fun-banner" class="fun-banner" hidden><div class="fun-text"></div><div class="fun-from"></div></div>
+  <div id="fun-count" class="fun-count" hidden></div>
+  <div id="event-banner" class="event-banner" hidden></div>
+  <canvas id="fun-canvas" class="fun-canvas" hidden></canvas>
+</div>
+<div id="chat-feed" class="chat-feed" aria-live="polite"></div>
+<div id="chat" class="chat social" hidden role="dialog" aria-label="Friends and chat">
+  <div class="social-head">
+    <div class="tabs" role="tablist" aria-label="Friends and chat">
+      <button type="button" role="tab" class="tab" id="tab-friends" data-tab="friends" aria-controls="pane-friends">Friends<span
+        class="badge" id="tab-friends-badge" hidden></span></button>
+      <button type="button" role="tab" class="tab" id="tab-room" data-tab="room" aria-controls="pane-room"><span
+        id="tab-room-label">Lobby</span><span class="badge" id="tab-room-badge" hidden></span></button>
+      <button type="button" role="tab" class="tab" id="tab-global" data-tab="global" aria-controls="pane-global">Global<span
+        class="pip" id="tab-global-badge" hidden></span></button>
+    </div>
+    <button type="button" class="icon-button" id="chat-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+
+  <section class="pane" id="pane-friends" role="tabpanel" aria-labelledby="tab-friends">
+    <div id="friends-signed-out" class="pane-note" hidden>
+      <p>Sign in on the start page (Play online &gt; Your account) to add friends and message them.</p>
+    </div>
+    <div id="friends-signed-in">
+      <form id="friends-add" class="chat-form" autocomplete="off" novalidate>
+        <input id="friends-add-input" type="text" maxlength="11" placeholder="Add a friend by gamertag" autocapitalize="off"
+          spellcheck="false" enterkeyhint="send">
+        <button type="submit" class="button primary small-button">Add</button>
+      </form>
+      <label class="row small friends-option"><input type="checkbox" id="friends-requests-open" checked> Let players send me
+        friend requests</label>
+      <p class="small pane-sub" id="friends-summary"></p>
+      <p class="small account-error" id="friends-error" role="alert" hidden></p>
+      <div id="friends-body" class="friends-body"></div>
+    </div>
+  </section>
+
+  <section class="pane" id="pane-dm" role="tabpanel" hidden>
+    <div class="dm-head">
+      <button type="button" class="icon-button" id="dm-back" aria-label="Back to friends">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <span class="dot" id="dm-dot"></span>
+      <div class="who"><div class="name" id="dm-name"></div><div class="doing" id="dm-doing"></div></div>
+      <div class="actions" id="dm-actions"></div>
+    </div>
+    <div id="dm-log" class="chat-log" aria-live="polite"></div>
+    <form id="dm-form" class="chat-form" autocomplete="off">
+      <input id="dm-input" type="text" maxlength="200" placeholder="Message" enterkeyhint="send">
+      <button type="submit" class="button primary small-button">Send</button>
+    </form>
+  </section>
+
+  <section class="pane" id="pane-room" role="tabpanel" aria-labelledby="tab-room" hidden>
+    <p class="small pane-note" id="pane-room-note">You're not in a lobby. Join or create one in the game (Multiplayer)
+      and its chat will appear here.</p>
+    <div id="pane-lobbies" class="pane-lobbies" hidden>
+      <div class="row">
+        <button type="button" class="button primary small-button" id="pane-lobby-create">Open my lobby</button>
+        <label class="inline-check"><input type="checkbox" id="pane-lobby-public" checked> Public</label>
+      </div>
+      <div id="pane-lobby-list" class="lobby-list"></div>
+      <p class="small pane-note" id="pane-lobby-empty">There are no public lobbies right now. Open your own, or ask a friend for an invite.</p>
+    </div>
+    <div class="lobby-head" id="pane-lobby-head">
+      <div class="who"><div class="name" id="chat-room-name"></div><p class="small pane-sub" id="chat-room"></p></div>
+      <div class="actions">
+        <button type="button" class="button small-button" id="pane-lobby-invite">Invite</button>
+        <button type="button" class="button small-button" id="pane-lobby-leave">Leave</button>
+      </div>
+    </div>
+    <div id="chat-log" class="chat-log" aria-live="polite"></div>
+    <div class="chat-quick" id="chat-quick"></div>
+    <div class="name-actions" id="chat-name-actions" hidden>
+      <strong id="chat-name"></strong>
+      <button type="button" class="icon-button" id="chat-name-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="name-buttons">
+        <button type="button" class="button small-button" id="chat-name-mention">Mention</button>
+        <button type="button" class="button small-button" id="chat-name-friend">Add friend</button>
+        <a class="button small-button" id="chat-name-games" href="games/">Games</a>
+      </div>
+    </div>
+    <div class="chat-replying" id="chat-replying" hidden><span></span>
+      <button type="button" class="icon-button" id="chat-replying-close" aria-label="Cancel the reply">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="mention-suggest" id="chat-mentions" hidden></div>
+    <form id="chat-form" class="chat-form" autocomplete="off">
+      <input id="chat-input" type="text" maxlength="200" placeholder="Message the lobby (@ to mention)" enterkeyhint="send">
+      <button type="submit" class="button primary small-button">Send</button>
+    </form>
+  </section>
+
+  <section class="pane" id="pane-global" role="tabpanel" aria-labelledby="tab-global" hidden>
+    <p class="small pane-sub" id="global-status"></p>
+    <a class="chat-pin" href="https://discord.gg/HCEMobile" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.028C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg><span>Official Discord: Discord.gg/HCEMobile</span><small>Join</small></a>
+    <div id="global-log" class="chat-log" aria-live="polite"></div>
+    <div class="name-actions" id="global-name-actions" hidden>
+      <strong id="global-name"></strong>
+      <button type="button" class="icon-button" id="global-name-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="name-buttons">
+        <button type="button" class="button small-button" id="global-name-mention">Mention</button>
+        <button type="button" class="button small-button" id="global-name-friend">Add friend</button>
+        <button type="button" class="button small-button" id="global-name-mute">Mute</button>
+        <a class="button small-button" id="global-name-games" href="games/">Games</a>
+      </div>
+    </div>
+    <div class="chat-replying" id="global-replying" hidden><span></span>
+      <button type="button" class="icon-button" id="global-replying-close" aria-label="Cancel the reply">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="mention-suggest" id="global-mentions" hidden></div>
+    <form id="global-form" class="chat-form" autocomplete="off">
+      <input id="global-input" type="text" maxlength="200" placeholder="Message everyone (@ to mention)" enterkeyhint="send">
+      <label class="button small-button chat-picture" id="global-picture" hidden title="Post a picture (staff)" aria-label="Post a picture">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="1.8" fill="currentColor"/><path d="M5 17l5-5 4 4 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <input type="file" id="global-picture-file" accept="image/*" hidden>
+      </label>
+      <button type="submit" class="button primary small-button">Send</button>
+    </form>
+    <p class="small pane-note" id="global-signed-out" hidden>Sign in on the start page to join the chat.</p>
+  </section>
+</div>
+<div id="invite-card" class="invite-card" hidden role="alertdialog" aria-labelledby="invite-card-text">
+  <p id="invite-card-text"></p>
+  <div class="row">
+    <button type="button" class="button primary small-button" id="invite-card-join">Join</button>
+    <button type="button" class="button small-button" id="invite-card-dismiss">Not now</button>
+  </div>
+</div>
+<div id="history-view" class="history-view" hidden role="dialog" aria-label="Match history"><iframe id="history-frame" title="Match history"></iframe></div>
+<div id="picture-view" class="picture-view" hidden role="dialog" aria-label="Picture"><img id="picture-view-image" alt=""></div>
+<div id="coop-view" class="coop-view" hidden>
+  <video id="coop-video" playsinline autoplay></video>
+  <div class="coop-bar">
+    <span id="coop-friend-status">Connecting…</span>
+    <select id="coop-part" aria-label="What to show">
+      <option value="auto">My view</option>
+      <option value="whole">Host's full screen</option>
+    </select>
+    <button type="button" class="button small-button" id="coop-leave">Leave</button>
+  </div>
+</div>
+<div id="game-menu" class="overlay game-menu" hidden>
+  <div class="panel">
+    <h2>Menu</h2>
+    <label class="row">Aim sensitivity <input type="range" id="menu-look" min="0.4" max="3" step="0.1"></label>
+    <label class="row" id="menu-layout-row">Touch layout
+      <select id="menu-layout">
+        <option value="modern">Modern (like mobile shooters)</option>
+        <option value="xbox">Original Xbox controller</option>
+      </select>
+      <button type="button" class="button small-button" id="menu-edit-layout">Edit layout</button></label>
+    <div class="row buttons"><button type="button" class="button" id="menu-edit-hud">Customize the HUD <span class="small">(move and resize the shields, radar, ammo, ...)</span></button></div>
+    <details class="keys-box" id="menu-keys-box">
+      <summary>Keyboard controls</summary>
+      <div class="key-list" id="menu-keys"></div>
+    </details>
+    <div class="row buttons"><button type="button" class="button" id="menu-chat">Friends &amp; chat <span class="badge"
+        id="menu-chat-badge" hidden></span></button></div>
+    <label class="row" id="menu-coop-row" hidden><input type="checkbox" id="menu-coop"> Host co-op (a friend in your lobby joins
+      as player 2)</label>
+    <p class="small" id="menu-coop-status" hidden></p>
+    <label class="row"><input type="checkbox" id="menu-silent"> Play sound when the phone is on silent</label>
+    <label class="row"><input type="checkbox" id="menu-aim-smoothing"> Aim smoothing <span class="small">(off: the view follows your finger or mouse at once)</span></label>
+    <label class="row"><input type="checkbox" id="menu-fps"> Show the frame rate</label>
+    <label class="row"><input type="checkbox" id="menu-ping"> Show the ping (online games)</label>
+    <label class="row"><input type="checkbox" id="menu-timing"> Show performance details</label>
+    <div class="row buttons"><button type="button" class="button" id="menu-photo">Photo mode <span class="small">(hides the HUD and controls)</span></button></div>
+    <label class="row">Resolution
+      <select id="menu-resolution">
+          <option value="auto">Automatic (480p on phones, 360p on slow ones, up to 1080p on computers)</option>
+          <option value="360">360p (fastest, for slow phones)</option>
+          <option value="480">480p (original Xbox)</option>
+          <option value="720">720p</option>
+          <option value="1080">1080p</option>
+          <option value="1440">1440p</option>
+          <option value="native">Native screen resolution</option>
+      </select></label>
+    <label class="row" id="menu-game-row">Game
+      <select id="menu-game"></select>
+      <button type="button" class="button small-button" id="menu-switch-game">Switch and restart</button></label>
+    <div class="row buttons">
+      <button type="button" class="button" id="menu-graphics-report">Report a graphics problem</button>
+      <button type="button" class="button" id="menu-copy-log">Copy log</button>
+      <button type="button" class="button" id="menu-quit">Quit to the start page</button>
+      <button type="button" class="button primary" id="menu-resume">Resume</button>
+    </div>
+  </div>
+</div>
+<div id="layout-editor" class="layout-editor" hidden></div>
+<div id="hud-editor" class="hud-editor" hidden></div>
+<div id="rotate" class="overlay" hidden><p>Turn your device sideways to play.</p></div>
+<div id="toast" class="toast" hidden></div>
+<div id="lobby-notice" class="lobby-notice" role="status" hidden>
+  <svg class="lobby-notice-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v10H9l-4 4v-4H4z" fill="none"
+    stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" stroke="currentColor"
+    stroke-width="1.8" stroke-linecap="round"/></svg>
+  <span class="lobby-notice-text"><b id="lobby-notice-name"></b><span id="lobby-notice-line">Lobby chat joined</span></span>
+</div>
+<div id="help-popup" class="overlay help-popup" hidden role="dialog" aria-modal="true" aria-labelledby="help-popup-title" translate="no">
+  <div class="panel">
+    <div class="help-popup-icon" aria-hidden="true">?</div>
+    <h2 id="help-popup-title"></h2>
+    <p id="help-popup-text"></p>
+    <p class="small" id="help-popup-note"></p>
+    <div class="help-popup-buttons">
+      <a class="button primary guide-link" id="help-popup-guide" href="guide/"></a>
+      <a class="button help-popup-discord" id="help-popup-discord" href="https://discord.gg/HCEMobile" target="_blank" rel="noopener"></a>
+    </div>
+    <button type="button" class="link-button" id="help-popup-close"></button>
+  </div>
+</div>
+<div id="update-gate" class="overlay update-gate" hidden role="dialog" aria-labelledby="update-gate-title">
+  <div class="panel">
+    <div class="update-icon" aria-hidden="true">&#x21bb;</div>
+    <h2 id="update-gate-title">Update available</h2>
+    <p>A new version of Halo CE Mobile is available. Please update to keep playing. Your saved games and game data
+      won't be affected.</p>
+    <button type="button" class="button primary update-go" id="update-gate-go">Update now</button>
+    <p class="small" id="update-gate-status"></p>
+    <button type="button" class="link-button" id="update-gate-skip" hidden>Continue without updating</button>
+  </div>
+</div>
+<div id="update-banner" class="update-banner" hidden role="status">
+  <span>Update ready <span class="small">(it installs when you leave this game or lobby)</span></span>
+  <button type="button" class="button primary" id="update-banner-go">Update now</button>
+  <button type="button" class="button" id="update-banner-later">Later</button>
+</div>
+<div id="fatal" class="overlay fatal" hidden>
+  <div class="panel">
+    <h2>The game stopped</h2>
+    <pre id="fatal-text"></pre>
+    <div class="row buttons">
+      <button type="button" class="button primary" id="fatal-reload">Reload</button>
+      <button type="button" class="button" id="fatal-log">Copy log</button>
+    </div>
+  </div>
+</div>
+<div id="log-view" class="overlay" hidden>
+  <div class="panel wide">
+    <pre id="log-text"></pre>
+    <div class="row buttons">
+      <button type="button" class="button" id="log-whole">Show the whole log</button>
+      <button type="button" class="button" id="log-copy">Copy</button>
+      <button type="button" class="button primary" id="log-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="input.js?h=3a5de83e80"></script>
+<script src="api-config.js"></script>
+<script src="account.js?h=836bd539e1"></script>
+<script src="net.js?h=ec1ef8683f"></script>
+<script src="coop.js?h=f1599437b1"></script>
+<script src="lobby.js?h=522843c2fa"></script>
+<script src="app.js?h=feb5a1e1b2"></script>
+</body>
+</html>
