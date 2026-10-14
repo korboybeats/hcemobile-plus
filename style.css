@@ -1746,3 +1746,13 @@ position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; display: 
 font: 800 9px/1 Orbitron, "Rajdhani", sans-serif; color: #06101c; background: #7fd1ff; border-radius: 2px;
 }
 .touch-layer .touch-button { color: #bfe6ff; }
+
+/* Fork: hide the live in-game touch layer while the layout editor is open (no ghost copy behind the dragged button) */
+body.editing-layout .touch-layer, body.editing-layout #touch { visibility: hidden !important; }
+body.editing-layout .layout-editor .touch-layer { visibility: visible !important; }
+.touch-layer.modern .m-fire .glyph, .touch-layer.modern .m-fire2 .glyph { width: 62%; height: 62%; }
+
+/* Fork: Halo HUD chrome for menu / scene / music / chat buttons */
+.menu-button { border-radius: 3px; border: 1.5px solid rgba(127, 209, 255, 0.5); background: rgba(6, 12, 22, 0.55); color: #bfe6ff; box-shadow: none; }
+.menu-button:active { background: rgba(127, 209, 255, 0.8); color: #06101c; }
+.option-button[aria-pressed="false"] { color: rgba(127, 209, 255, 0.4); border-color: rgba(127, 209, 255, 0.2); }
