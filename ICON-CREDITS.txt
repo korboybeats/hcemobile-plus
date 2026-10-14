@@ -1,0 +1,1 @@
+HUD icons for fire, melee, grenade, grenade-type, zoom, reload, and crouch are from https://game-icons.net by Lorc, Delapouite and Skoll, licensed CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/).

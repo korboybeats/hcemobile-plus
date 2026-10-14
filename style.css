@@ -1799,3 +1799,24 @@ body:has(#layout-editor:not([hidden])) .chat-feed { visibility: hidden !importan
 .game-menu p.small { margin: 0; font-size: 11px; }
 .game-menu .panel > .row.buttons:last-child { grid-column: 1 / -1; margin-top: 6px; }
 @media (max-width: 520px) { .game-menu .panel { grid-template-columns: 1fr; } }
+/* menu polish pass */
+.game-menu .panel { grid-template-columns: minmax(0,1fr) minmax(0,1fr); column-gap: 18px; row-gap: 6px; padding: 12px 16px 14px; }
+.game-menu .panel > h2 { margin: 0 0 4px; padding-bottom: 6px; border-bottom: 1px solid var(--panel-edge); letter-spacing: .18em; text-transform: uppercase; }
+.game-menu .panel > .row, .game-menu .panel > .keys-box { margin: 0; min-height: 32px; height: 32px; display: flex; align-items: center; gap: 8px; box-sizing: border-box; min-width: 0; font-size: 12px; white-space: nowrap; }
+.game-menu .panel > .row[hidden], .game-menu .panel > p[hidden] { display: none; }
+.game-menu .panel > .row > input[type=checkbox] { flex: 0 0 16px; width: 16px; height: 16px; margin: 0; accent-color: #7fd1ff; }
+.game-menu .panel > .row { overflow: hidden; text-overflow: ellipsis; justify-content: flex-start; }
+.game-menu .panel select, .game-menu .panel .button { height: 28px; min-height: 28px; border-radius: 4px; box-sizing: border-box; font-size: 11px; }
+.game-menu .panel select { flex: 1 1 0; min-width: 0; padding: 0 6px; }
+.game-menu .panel .button.small-button { flex: 0 0 auto; padding: 0 10px; }
+.game-menu .panel > .row.buttons > .button { flex: 1 1 auto; width: 100%; justify-content: center; }
+.game-menu .row input[type=range] { flex: 1 1 0; min-width: 0; height: 18px; margin: 0; }
+.game-menu #menu-look-val { flex: 0 0 38px; text-align: right; font-variant-numeric: tabular-nums; color: #7fd1ff; }
+.game-menu .keys-box { flex-direction: column; align-items: stretch; justify-content: center; }
+.game-menu .keys-box[open] { height: auto; }
+.game-menu .keys-box summary { padding: 0; line-height: 32px; cursor: pointer; }
+.game-menu .panel > .row.buttons:last-child { grid-column: 1 / -1; height: auto; margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--panel-edge);
+  display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
+.game-menu .panel > .row.buttons:last-child > .button { width: 100%; height: 32px; min-height: 32px; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 520px) { .game-menu .panel > .row.buttons:last-child { grid-template-columns: 1fr 1fr; } }
+.game-menu .keys-box, .game-menu .keys-box summary { text-align: left; align-items: flex-start; }
