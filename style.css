@@ -1825,3 +1825,13 @@ body:has(#layout-editor:not([hidden])) .chat-feed { visibility: hidden !importan
 body.editing-layout .fps{pointer-events:auto!important;z-index:2147483000!important;touch-action:none;cursor:move;outline:1.25px dashed rgba(120,200,255,.9);outline-offset:2px}
 body.editing-layout .fps[hidden]{display:block!important;min-width:60px;min-height:1.2em}
 body.editing-layout .fps:empty::before{content:"FPS / ping"}
+
+/* plus20: single unified editor panel, always on top */
+.editor-bar.ue-panel{z-index:2147483647!important;position:fixed}
+body.unified-edit .layout-editor,body.unified-edit .hud-editor{z-index:30}
+body.unified-edit .hud-editor-bar{display:none!important}
+body.unified-edit .element-panel{display:none!important}
+.editor-bar.ue-panel:not(.ue-hud-mode) .ue-hud{display:none}
+.editor-bar.ue-panel.ue-hud-mode .editor-tools>:not(.ue-hud):not(.editor-actions){display:none!important}
+.editor-bar.ue-panel.ue-hud-mode .editor-actions [data-reset]:not(.ue-hud-reset){display:none}
+.ue-hud{display:flex;flex-direction:column;gap:8px}
