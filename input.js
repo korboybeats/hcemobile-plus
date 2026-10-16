@@ -16,14 +16,29 @@ var gi=null,dbT=0,dbN=0,dbX=0,dbY=0,dbR=[0,0,0];function mnu(){if(window.__gyroM
 function ok(){if(!on||document.hidden||document.body.classList.contains("editing-layout")||document.body.classList.contains("at-menus"))return!1;if(mnu()){ax=ay=0;G.whyStop="engine menu";return!1}if(gate)try{return!!gate()}catch(e){return!1}return!0}
 function dbg(r){if(!window.__gyroDebug)return;var n=performance.now();if(n-dbT<1e3)return;dbT=n;var g={on:on,zoomOnly:zo,zoomed:zoomed,hidden:document.hidden,editing:document.body.classList.contains("editing-layout"),gate:null,menuUp:null,engMenu:mnu(),ios:IOS,attached:!!k};try{g.gate=gate?!!gate():"none"}catch(e){g.gate="err:"+e}try{g.menuUp=j()}catch(e){}try{gi&&Object.assign(g,gi())}catch(e){}console.log("[gyro] mode="+(on?(zo?"zoom":"always"):"off"),JSON.stringify(g),"rate",JSON.stringify(dbR),"sent dx/dy",dbX.toFixed(3),dbY.toFixed(3),"events",dbN);dbX=dbY=0;dbN=0}
 var ax=0,ay=0,G={n:0,ev:0,eps:0,raw:[0,0,0],iv:null,ivU:"",dt:0,dx:0,dy:0,sent:0,whyStop:"",ts:0};window.__gyStat=G;setInterval(function(){G.eps=G.ev;G.ev=0},1e3);
-function onm(ev){var r=ev.rotationRate;G.ev++;r&&(G.raw=[r.alpha,r.beta,r.gamma]);G.iv=ev.interval;G.ivU=ev.interval==null?"?":(ev.interval>1?"ms":"s");G.ts=ev.timeStamp;try{dbg(r)}catch(e){}r&&(r.alpha!=null||r.beta!=null)&&(window.__gyroRecv=!0);var now=performance.now();var dt=lt?(now-lt)/1e3:0;lt=now;var iv=+ev.interval,ivS=iv>1?iv/1e3:iv;if(ivS>0&&ivS<=.1)dt=ivS;else if(!(dt>0)||dt>.25)dt=1/60;dt=Math.min(dt,.05);G.dt=dt;if(!r){G.whyStop="no rotationRate";return}if(!ok()){zoomed=!1;G.whyStop==="engine menu"||(G.whyStop="gate");return}if(zo&&!zoomed){G.whyStop="not zoomed";return}
+function onm(ev){var r=ev.rotationRate;G.ev++;r&&(G.raw=[r.alpha,r.beta,r.gamma]);G.iv=ev.interval;G.ivU=ev.interval==null?"?":(ev.interval>1?"ms":"s");G.ts=ev.timeStamp;try{dbg(r)}catch(e){}r&&(r.alpha!=null||r.beta!=null)&&(window.__gyroRecv=!0);var now=performance.now();var dt=lt?(now-lt)/1e3:0;lt=now;var iv=+ev.interval,ivS=iv>1?iv/1e3:iv;if(ivS>0&&ivS<=.1)dt=ivS;else if(!(dt>0)||dt>.25)dt=1/60;dt=Math.min(dt,.05);G.dt=dt;if(!r){G.whyStop="no rotationRate";return}if(!ok()){zoomed=!1;gstop();G.whyStop==="engine menu"||(G.whyStop="gate");return}if(zo&&!zoomed){gstop();G.whyStop="not zoomed";return}
 var ra=+r.alpha||0,rb=+r.beta||0,rg=+r.gamma||0,rx=IOS?ra:rb,ry=IOS?rb:rg,th=ang()*Math.PI/180,c=Math.cos(th),s=Math.sin(th);
 var yaw=rx*s+ry*c,pit=rx*c-ry*s;if(swp){var tq=yaw;yaw=pit;pit=tq}
-var mag=Math.hypot(yaw,pit);if(mag<dz){G.whyStop="deadzone";G.dx=G.dy=0;return}var f=(mag-dz)/mag;yaw*=f;pit*=f;
-var z=zoomed?zm:1,x=-yaw*dt*K*sx*z*(invH?-1:1),y=-pit*dt*K*sy*z*(inv?-1:1);last=[x,y];
-window.__gyroTrace&&window.__gyroTrace.push([x,y,ang()]);ax+=x*E*2;ay+=y*E*2;var qx=Math.trunc(ax),qy=Math.trunc(ay);G.dx=x*E*2;G.dy=y*E*2;G.whyStop=k?"":"no ring buffer (k)";if(qx||qy){ax-=qx;ay-=qy;dbX+=qx;dbY+=qy;dbN++;G.sent++;__lf.raw(qx,qy)}}
+var mag=Math.hypot(yaw,pit);if(mag<1e-6){gv(0,0,now,dt);G.whyStop="deadzone";return}var om=mag<2*dz?mag*mag/(4*dz):mag-dz,f=om/mag;yaw*=f;pit*=f;
+var z=zoomed?zm:1,vx=-yaw*K*sx*z*(invH?-1:1)*E*2,vy=-pit*K*sy*z*(inv?-1:1)*E*2;last=[vx*dt/(E*2),vy*dt/(E*2)];window.__gyroTrace&&window.__gyroTrace.push([vx*dt,vy*dt,ang()]);G.whyStop=k?"":"no ring buffer (k)";gv(vx,vy,now,dt)}
+
+/* plus29: decouple sensing from sending. Sensor events integrate into pending rotation (px,py) and update latest
+   angular velocity (VX,VY). Each rAF frame sends a float delta = 0.85*v*frameDt + 0.15*pending, so motion is
+   extrapolated smoothly between sensor samples and residual error drains in ~6 frames (no drift, no lost motion). */
+var VX=0,VY=0,px=0,py=0,lsT=0,gRaf=0,gTp=0,gIdle=0,sN=0,sSum=0,mIn=0;G.sps=0;G.avg=0;G.mIn=0;
+setInterval(function(){G.sps=sN;G.avg=sN?sSum/sN:0;sN=0;sSum=0},1e3);
+function gstop(){gRaf&&cancelAnimationFrame(gRaf);gRaf=0;gTp=0;VX=VY=px=py=0}
+function gv(vx,vy,now,dt){VX=vx;VY=vy;px+=vx*dt;py+=vy*dt;mIn+=Math.hypot(vx*dt,vy*dt);G.mIn=mIn;lsT=now;gIdle=0;window.__gyroInteg&&(window.__gyroInteg[0]+=vx*dt,window.__gyroInteg[1]+=vy*dt);gRaf||(gTp=0,gRaf=requestAnimationFrame(gtick))}
+function gtick(now){gRaf=0;if(!on||!ok()||(zo&&!zoomed)){gstop();return}
+var fd=gTp?Math.min(.05,Math.max(.001,(now-gTp)/1e3)):1/120;gTp=now;
+var stale=now-lsT>60;if(stale){VX=VY=0}
+var x=.85*VX*fd+.15*px,y=.85*VY*fd+.15*py;if(stale&&Math.abs(px)<1e-3&&Math.abs(py)<1e-3){x=px;y=py}
+px-=x;py-=y;G.dx=x;G.dy=y;
+if(x||y){G.sent++;sN++;sSum+=Math.hypot(x,y);dbX+=x;dbY+=y;dbN++;window.__gyroSent&&(window.__gyroSent[0]+=x,window.__gyroSent[1]+=y,window.__gyroSendLog&&window.__gyroSendLog.push([now,x,y]));__lf.raw(x,y)}
+if(stale&&!x&&!y){if(++gIdle>10){gstop();return}}
+gRaf=requestAnimationFrame(gtick)}
 window.addEventListener("devicemotion",onm);
-return{set:function(o){o=o||{};on=!!o.on;zo=!!o.zoomOnly;sx=+o.h||1;sy=+o.v||1;zm=o.zoom==null?.6:+o.zoom;inv=!!o.invert;invH=!!o.invertH;swp=!!o.swap;if(o.ios!=null)IOS=!!o.ios;if(!on)zoomed=!1},gate:function(f,i){gate=f;gi=i||null},
+return{set:function(o){o=o||{};on=!!o.on;zo=!!o.zoomOnly;sx=+o.h||1;sy=+o.v||1;zm=o.zoom==null?.6:+o.zoom;inv=!!o.invert;invH=!!o.invertH;swp=!!o.swap;if(o.ios!=null)IOS=!!o.ios;if(!on){zoomed=!1;gstop()}},gate:function(f,i){gate=f;gi=i||null},
 pad:function(i,b){var p=prev[i]|0,q=b&~p;prev[i]=b;if(q&(1<<m))zoomed=!zoomed;if(q&((1<<l)|(1<<r)|(1<<s)|(1<<30)))zoomed=!1},
 reset:function(){zoomed=!1},stat:function(){var g=null;try{g=gate?!!gate():"none"}catch(e){g="err:"+e.message}var gi2=null;try{gi2=gi&&gi()}catch(e){}return{G:G,on:on,zo:zo,zoomed:zoomed,hidden:document.hidden,editing:document.body.classList.contains("editing-layout"),gate:g,gi:gi2,ok:ok(),k:!!k,t:t,E:E,touchN:window.__tlN||0,touchT:window.__tlT,orient:ang()}},isZoomed:function(){return zoomed},_test:onm,
 request:function(){var M=window.DeviceMotionEvent;if(!M)return Promise.resolve("unavailable");if(typeof M.requestPermission==="function")return M.requestPermission().catch(function(){return"denied"});return Promise.resolve("granted")}}})();
