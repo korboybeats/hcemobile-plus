@@ -12,14 +12,14 @@ el.textContent=t}catch(e){try{mk().hidden=!1;el.textContent="GYRO overlay error:
 fetch("version.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).then(function(v){var b=document.getElementById("menu-build");b&&(b.textContent="Build "+(v.fork||"")+" ("+v.version+")")}).catch(function(){});
 setTimeout(tick,0);setInterval(tick,250)})();
 window.__gyroMode=function(a){var m=a.gyro;return m===!0?"always":m==="always"||m==="zoom"?m:"off"};
-window.__gyroDef={gyro:"off",gyroH:1,gyroV:1,gyroZoom:.6,gyroInvert:!1};
-window.__gyroApply=function(a){var d=__gyroDef;(function(H){H&&H.setGyro&&H.setGyro({on:__gyroMode(a)!=="off",zoomOnly:__gyroMode(a)==="zoom",h:a.gyroH??d.gyroH,v:a.gyroV??d.gyroV,zoom:a.gyroZoom??d.gyroZoom,invert:!!a.gyroInvert})})(__HI())};
+window.__gyroDef={gyro:"off",gyroH:1,gyroV:1,gyroZoom:.6,gyroInvert:!1,gyroInvertH:!1,gyroSwap:!1};
+window.__gyroApply=function(a){var d=__gyroDef;(function(H){H&&H.setGyro&&H.setGyro({on:__gyroMode(a)!=="off",zoomOnly:__gyroMode(a)==="zoom",h:a.gyroH??d.gyroH,v:a.gyroV??d.gyroV,zoom:a.gyroZoom??d.gyroZoom,invert:!!a.gyroInvert,invertH:!!a.gyroInvertH,swap:!!a.gyroSwap})})(__HI())};
 window.__gyroMsg=function(p,m){var el=document.getElementById(p+"-gyro-msg");if(!el)return;el.textContent=m;el.hidden=!m;clearTimeout(el._t);m&&(el._t=setTimeout(function(){el.hidden=!0},12e3))};
 window.__gyroUI=function(p,a,save){var d=__gyroDef,g=function(i){return document.getElementById(p+"-"+i)};if(!g("gyro"))return;
 var sl=[["gyro-h","gyroH"],["gyro-v","gyroV"],["gyro-zoom","gyroZoom"]];
 a.gyro=__gyroMode(a);g("gyro-invert").checked=!!a.gyroInvert;
 sl.forEach(function(q){var el=g(q[0]),v=a[q[1]]??d[q[1]];el.value=v;__lookVal(p+"-"+q[0],v);el.oninput=function(){a[q[1]]=parseFloat(el.value);__lookVal(p+"-"+q[0],a[q[1]]);save();__gyroApply(a)}});
-g("gyro-invert").onchange=function(){a.gyroInvert=g("gyro-invert").checked;save();__gyroApply(a)};
+g("gyro-invert").onchange=function(){a.gyroInvert=g("gyro-invert").checked;save();__gyroApply(a)};[["gyro-invert-h","gyroInvertH"],["gyro-swap","gyroSwap"]].forEach(function(q){var el=g(q[0]);if(!el)return;el.checked=!!a[q[1]];el.onchange=function(){a[q[1]]=el.checked;save();__gyroApply(a)}});
 var seg=g("gyro"),st=document.getElementById(p+"-gyro-status");
 var mark=function(){seg.querySelectorAll("button").forEach(function(b){b.classList.toggle("on",b.dataset.gyro===a.gyro)})};mark();
 var stat=function(){if(!st)return;var M=window.DeviceMotionEvent,s=!M?"no sensor":(window.__gyroPerm||(typeof M.requestPermission==="function"?"not asked":"granted"));st.textContent="Motion: "+s+(window.__gyroRecv?" \u2014 receiving data":"")};stat();clearInterval(st&&st._iv);st&&(st._iv=setInterval(stat,1e3));
