@@ -1,4 +1,7 @@
 <!doctype html>
+<!doctype html>
+<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -330,7 +333,7 @@
     <p class="small" id="opt-gyro-msg" hidden></p>
     <label class="row">Gyro horizontal <input type="range" id="opt-gyro-h" min="0.1" max="4" step="0.01"> <button type="button" class="button sens-nudge" data-for="opt-gyro-h" data-d="-0.01">&minus;</button><span class="editor-row-value" id="opt-gyro-h-val"></span><button type="button" class="button sens-nudge" data-for="opt-gyro-h" data-d="0.01">+</button></label>
     <label class="row">Gyro vertical <input type="range" id="opt-gyro-v" min="0.1" max="4" step="0.01"> <button type="button" class="button sens-nudge" data-for="opt-gyro-v" data-d="-0.01">&minus;</button><span class="editor-row-value" id="opt-gyro-v-val"></span><button type="button" class="button sens-nudge" data-for="opt-gyro-v" data-d="0.01">+</button></label>
-    <label class="row">Gyro zoom sensitivity <input type="range" id="opt-gyro-zoom" min="0.1" max="1.5" step="0.01"> <button type="button" class="button sens-nudge" data-for="opt-gyro-zoom" data-d="-0.01">&minus;</button><span class="editor-row-value" id="opt-gyro-zoom-val"></span><button type="button" class="button sens-nudge" data-for="opt-gyro-zoom" data-d="0.01">+</button></label>
+    <label class="row">Gyro zoom 1 (2x: pistol, sniper first zoom, etc.) <input type="range" id="opt-gyro-zoom" min="0.1" max="1.5" step="0.01"> <button type="button" class="button sens-nudge" data-for="opt-gyro-zoom" data-d="-0.01">&minus;</button><span class="editor-row-value" id="opt-gyro-zoom-val"></span><button type="button" class="button sens-nudge" data-for="opt-gyro-zoom" data-d="0.01">+</button></label><label class="row">Gyro zoom 2 (sniper/rocket second level 8x) <input type="range" id="opt-gyro-zoom2" min="0.1" max="1.5" step="0.01"> <button type="button" class="button sens-nudge" data-for="opt-gyro-zoom2" data-d="-0.01">&minus;</button><span class="editor-row-value" id="opt-gyro-zoom2-val"></span><button type="button" class="button sens-nudge" data-for="opt-gyro-zoom2" data-d="0.01">+</button></label>
     <label class="row">Invert gyro vertical <input type="checkbox" id="opt-gyro-invert"></label>
     <label class="row">Invert gyro horizontal <input type="checkbox" id="opt-gyro-invert-h"></label>
     <label class="row">Swap gyro axes <input type="checkbox" id="opt-gyro-swap"></label>
@@ -767,7 +770,7 @@
     <p class="small" id="menu-gyro-msg" hidden></p>
     <label class="row">Gyro horizontal <input type="range" id="menu-gyro-h" min="0.1" max="4" step="0.01"> <button type="button" class="button sens-nudge" data-for="menu-gyro-h" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-h-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-h" data-d="0.01">+</button></label>
     <label class="row">Gyro vertical <input type="range" id="menu-gyro-v" min="0.1" max="4" step="0.01"> <button type="button" class="button sens-nudge" data-for="menu-gyro-v" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-v-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-v" data-d="0.01">+</button></label>
-    <label class="row">Gyro zoom sensitivity <input type="range" id="menu-gyro-zoom" min="0.1" max="1.5" step="0.01"> <button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-zoom-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="0.01">+</button></label>
+    <label class="row">Gyro zoom 1 (2x: pistol, sniper first zoom, etc.) <input type="range" id="menu-gyro-zoom" min="0.1" max="1.5" step="0.01"> <button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-zoom-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="0.01">+</button></label><label class="row">Gyro zoom 2 (sniper/rocket second level 8x) <input type="range" id="menu-gyro-zoom2" min="0.1" max="1.5" step="0.01"> <button type="button" class="button sens-nudge" data-for="menu-gyro-zoom2" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-zoom2-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom2" data-d="0.01">+</button></label>
     <label class="row">Invert gyro vertical <input type="checkbox" id="menu-gyro-invert"></label>
     <label class="row">Invert gyro horizontal <input type="checkbox" id="menu-gyro-invert-h"></label>
     <label class="row">Swap gyro axes <input type="checkbox" id="menu-gyro-swap"></label>
@@ -876,12 +879,12 @@
   </div>
 </div>
 
-<script src="input.js?h=3a5de83e80p29"></script>
+<script src="input.js?h=3a5de83e80p30"></script>
 <script src="api-config.js"></script>
 <script src="account.js?h=836bd539e1"></script>
 <script src="net.js?h=ec1ef8683f"></script>
 <script src="coop.js?h=f1599437b1"></script>
 <script src="lobby.js?h=522843c2fa"></script>
-<script src="app.js?h=d0ee677199p29"></script>
+<script src="app.js?h=d0ee677199p30"></script>
 </body>
 </html>
