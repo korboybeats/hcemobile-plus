@@ -1,16 +1,23 @@
 window.__gyroMode=function(a){var m=a.gyro;return m===!0?"always":m==="always"||m==="zoom"?m:"off"};
 window.__gyroDef={gyro:"off",gyroH:1,gyroV:1,gyroZoom:.6,gyroInvert:!1};
 window.__gyroApply=function(a){var d=__gyroDef;window.HaloInput&&HaloInput.setGyro&&HaloInput.setGyro({on:__gyroMode(a)!=="off",zoomOnly:__gyroMode(a)==="zoom",h:a.gyroH??d.gyroH,v:a.gyroV??d.gyroV,zoom:a.gyroZoom??d.gyroZoom,invert:!!a.gyroInvert})};
-window.__gyroMsg=function(p,m){var el=document.getElementById(p+"-gyro-msg");if(!el)return;el.textContent=m;el.hidden=!m;clearTimeout(el._t);m&&(el._t=setTimeout(function(){el.hidden=!0},4e3))};
+window.__gyroMsg=function(p,m){var el=document.getElementById(p+"-gyro-msg");if(!el)return;el.textContent=m;el.hidden=!m;clearTimeout(el._t);m&&(el._t=setTimeout(function(){el.hidden=!0},12e3))};
 window.__gyroUI=function(p,a,save){var d=__gyroDef,g=function(i){return document.getElementById(p+"-"+i)};if(!g("gyro"))return;
 var sl=[["gyro-h","gyroH"],["gyro-v","gyroV"],["gyro-zoom","gyroZoom"]];
-a.gyro=__gyroMode(a);g("gyro").value=a.gyro;g("gyro-invert").checked=!!a.gyroInvert;
+a.gyro=__gyroMode(a);g("gyro-invert").checked=!!a.gyroInvert;
 sl.forEach(function(q){var el=g(q[0]),v=a[q[1]]??d[q[1]];el.value=v;__lookVal(p+"-"+q[0],v);el.oninput=function(){a[q[1]]=parseFloat(el.value);__lookVal(p+"-"+q[0],a[q[1]]);save();__gyroApply(a)}});
 g("gyro-invert").onchange=function(){a.gyroInvert=g("gyro-invert").checked;save();__gyroApply(a)};
-g("gyro").onchange=function(){var c=g("gyro"),want=c.value,was=a.gyro;if(want==="off"){a.gyro="off";save();__gyroApply(a);return}if(was!=="off"&&was){a.gyro=want;save();__gyroApply(a);return}
-var M=window.DeviceMotionEvent;if(!M){c.value="off";a.gyro="off";save();__gyroApply(a);__gyroMsg(p,"Gyro isn't available on this device.");return}
-var go=function(r){if(r==="granted"){a.gyro=want;save();__gyroApply(a);__gyroMsg(p,"")}else{c.value="off";a.gyro="off";save();__gyroApply(a);__gyroMsg(p,r==="denied"?"Motion access was denied. Allow Motion & Orientation Access in Safari settings, then try again.":"Gyro isn't available on this device.")}};
-if(typeof M.requestPermission==="function"){M.requestPermission().then(go,function(){go("denied")})}else go("granted")}};
+var seg=g("gyro"),st=document.getElementById(p+"-gyro-status");
+var mark=function(){seg.querySelectorAll("button").forEach(function(b){b.classList.toggle("on",b.dataset.gyro===a.gyro)})};mark();
+var stat=function(){if(!st)return;var M=window.DeviceMotionEvent,s=!M?"no sensor":(window.__gyroPerm||(typeof M.requestPermission==="function"?"not asked":"granted"));st.textContent="Motion: "+s+(window.__gyroRecv?" \u2014 receiving data":"")};stat();clearInterval(st&&st._iv);st&&(st._iv=setInterval(stat,1e3));
+var set=function(m){a.gyro=m;save();__gyroApply(a);mark();stat()};
+seg.querySelectorAll("button").forEach(function(b){b.onclick=function(){var want=b.dataset.gyro;if(want==="off"){set("off");__gyroMsg(p,"");return}
+var M=window.DeviceMotionEvent;if(!M){window.__gyroPerm="no sensor";set("off");__gyroMsg(p,"Gyro isn't available on this device.");return}
+if(typeof M.requestPermission!=="function"||window.__gyroPerm==="granted"){window.__gyroPerm="granted";set(want);return}
+var pr;try{pr=M.requestPermission()}catch(err){pr=Promise.reject(err)}
+var O=window.DeviceOrientationEvent;try{O&&typeof O.requestPermission==="function"&&O.requestPermission().catch(function(){})}catch(e){}
+pr.then(function(r){window.__gyroPerm=r;if(r==="granted"){set(want);__gyroMsg(p,"")}else{set("off");__gyroMsg(p,"Motion access is denied for this app (iOS remembered an earlier choice, so no prompt). Reset it: iOS Settings \u203a Safari \u203a Advanced \u203a Website Data \u2192 remove this site, or delete and re-add the home-screen app, then tap Always/Zoom again.")}},
+function(err){window.__gyroPerm="error";set("off");__gyroMsg(p,"iOS blocked the permission request ("+(err&&(err.name||err.message)||"error")+") \u2014 it must come straight from a tap. Tap Always or Zoom again.")})}})};
 "use strict";
 window.__lookVal = function (i, v) {
   var o = document.getElementById(i + "-val");

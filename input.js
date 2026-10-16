@@ -13,7 +13,7 @@ set:function(v){v=+v;L=isFinite(v)?Math.min(1,Math.max(0,v)):0;if(L<=0&&on){emit
 var __gy=(function(){var on=!1,zo=!1,sx=1,sy=1,zm=.6,inv=!1,gate=null,lt=0,zoomed=!1,prev=[0,0,0,0,0,0],dz=1.5,K=2.2,last=null;
 function ang(){var a=screen.orientation&&typeof screen.orientation.angle==="number"?screen.orientation.angle:(typeof window.orientation==="number"?window.orientation:0);a=((a%360)+360)%360;return a}
 function ok(){if(!on||document.hidden||document.body.classList.contains("editing-layout"))return!1;try{if(j())return!1}catch(e){}if(gate)try{return!!gate()}catch(e){return!1}return!0}
-function onm(ev){var r=ev.rotationRate;var now=ev.timeStamp||performance.now();var dt=lt?(now-lt)/1e3:0;lt=now;if(!r||!(dt>0)||dt>.1)return;if(!ok()){zoomed=!1;return}if(zo&&!zoomed)return;
+function onm(ev){var r=ev.rotationRate;r&&(r.alpha!=null||r.beta!=null)&&(window.__gyroRecv=!0);var now=ev.timeStamp||performance.now();var dt=lt?(now-lt)/1e3:0;lt=now;if(!r||!(dt>0)||dt>.1)return;if(!ok()){zoomed=!1;return}if(zo&&!zoomed)return;
 var bx=r.beta||0,gy=r.gamma||0,th=ang()*Math.PI/180,c=Math.cos(th),s=Math.sin(th);
 var yaw=bx*s+gy*c,pit=bx*c-gy*s;
 var mag=Math.hypot(yaw,pit);if(mag<dz)return;var f=(mag-dz)/mag;yaw*=f;pit*=f;
