@@ -1,3 +1,16 @@
+window.__gyroMode=function(a){var m=a.gyro;return m===!0?"always":m==="always"||m==="zoom"?m:"off"};
+window.__gyroDef={gyro:"off",gyroH:1,gyroV:1,gyroZoom:.6,gyroInvert:!1};
+window.__gyroApply=function(a){var d=__gyroDef;window.HaloInput&&HaloInput.setGyro&&HaloInput.setGyro({on:__gyroMode(a)!=="off",zoomOnly:__gyroMode(a)==="zoom",h:a.gyroH??d.gyroH,v:a.gyroV??d.gyroV,zoom:a.gyroZoom??d.gyroZoom,invert:!!a.gyroInvert})};
+window.__gyroMsg=function(p,m){var el=document.getElementById(p+"-gyro-msg");if(!el)return;el.textContent=m;el.hidden=!m;clearTimeout(el._t);m&&(el._t=setTimeout(function(){el.hidden=!0},4e3))};
+window.__gyroUI=function(p,a,save){var d=__gyroDef,g=function(i){return document.getElementById(p+"-"+i)};if(!g("gyro"))return;
+var sl=[["gyro-h","gyroH"],["gyro-v","gyroV"],["gyro-zoom","gyroZoom"]];
+a.gyro=__gyroMode(a);g("gyro").value=a.gyro;g("gyro-invert").checked=!!a.gyroInvert;
+sl.forEach(function(q){var el=g(q[0]),v=a[q[1]]??d[q[1]];el.value=v;__lookVal(p+"-"+q[0],v);el.oninput=function(){a[q[1]]=parseFloat(el.value);__lookVal(p+"-"+q[0],a[q[1]]);save();__gyroApply(a)}});
+g("gyro-invert").onchange=function(){a.gyroInvert=g("gyro-invert").checked;save();__gyroApply(a)};
+g("gyro").onchange=function(){var c=g("gyro"),want=c.value,was=a.gyro;if(want==="off"){a.gyro="off";save();__gyroApply(a);return}if(was!=="off"&&was){a.gyro=want;save();__gyroApply(a);return}
+var M=window.DeviceMotionEvent;if(!M){c.value="off";a.gyro="off";save();__gyroApply(a);__gyroMsg(p,"Gyro isn't available on this device.");return}
+var go=function(r){if(r==="granted"){a.gyro=want;save();__gyroApply(a);__gyroMsg(p,"")}else{c.value="off";a.gyro="off";save();__gyroApply(a);__gyroMsg(p,r==="denied"?"Motion access was denied. Allow Motion & Orientation Access in Safari settings, then try again.":"Gyro isn't available on this device.")}};
+if(typeof M.requestPermission==="function"){M.requestPermission().then(go,function(){go("denied")})}else go("granted")}};
 "use strict";
 window.__lookVal = function (i, v) {
   var o = document.getElementById(i + "-val");
@@ -1552,6 +1565,7 @@ window.__lookVal = function (i, v) {
       __lookVal("menu-look", a.look),
       (e("menu-lookf").value = a.lookFilter ?? 0),
       __lookVal("menu-lookf", a.lookFilter ?? 0),
+      __gyroUI("menu", a, r),
       (e("menu-coop-row").hidden = !HaloNet.status().room),
       (e("menu-coop").checked = HaloCoop.hosting),
       mt(),
@@ -4489,6 +4503,8 @@ window.__lookVal = function (i, v) {
             }),
             HaloInput.setLookSensitivity(a.look),
             HaloInput.setLookFilter(a.lookFilter ?? 0),
+            __gyroApply(a),
+            HaloInput.setGyroGate(T),
             HaloInput.onController((e, t) => {
               h(
                 t ? `Controller connected: ${e}` : "Controller disconnected",
@@ -4724,6 +4740,8 @@ window.__lookVal = function (i, v) {
     }),
       HaloInput.setLookSensitivity(a.look),
       HaloInput.setLookFilter(a.lookFilter ?? 0),
+      __gyroApply(a),
+      HaloInput.setGyroGate(T),
       (e("touch").hidden = !a.touch),
       (e("coop-part").onchange = (e) => HaloCoop.setView(e.target.value)),
       (e("coop-leave").onclick = () => {
@@ -9336,6 +9354,7 @@ window.__lookVal = function (i, v) {
       __lookVal("opt-look", a.look),
       (e("opt-lookf").value = a.lookFilter ?? 0),
       __lookVal("opt-lookf", a.lookFilter ?? 0),
+      __gyroUI("opt", a, r),
       (e("opt-lookf").oninput = (t) => {
         ((a.lookFilter = parseFloat(t.target.value)),
           __lookVal("opt-lookf", a.lookFilter),
