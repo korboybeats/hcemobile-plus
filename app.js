@@ -4511,7 +4511,7 @@ window.__lookVal = function (i, v) {
             HaloInput.setLookSensitivity(a.look),
             HaloInput.setLookFilter(a.lookFilter ?? 0),
             __gyroApply(a),
-            HaloInput.setGyroGate(T),
+            HaloInput.setGyroGate(()=>!document.hidden&&!document.body.classList.contains("editing-layout")&&e("game-menu").hidden&&e("fatal").hidden,()=>({started:!!o.started,playing:document.body.classList.contains("playing"),statusAge:o.gameStatus?Date.now()-o.gameStatus.time:null,menuHidden:e("game-menu").hidden,fatalHidden:e("fatal").hidden})),
             HaloInput.onController((e, t) => {
               h(
                 t ? `Controller connected: ${e}` : "Controller disconnected",
@@ -4748,7 +4748,7 @@ window.__lookVal = function (i, v) {
       HaloInput.setLookSensitivity(a.look),
       HaloInput.setLookFilter(a.lookFilter ?? 0),
       __gyroApply(a),
-      HaloInput.setGyroGate(T),
+      HaloInput.setGyroGate(()=>!document.hidden&&!document.body.classList.contains("editing-layout")&&e("game-menu").hidden&&e("fatal").hidden,()=>({started:!!o.started,playing:document.body.classList.contains("playing"),statusAge:o.gameStatus?Date.now()-o.gameStatus.time:null,menuHidden:e("game-menu").hidden,fatalHidden:e("fatal").hidden})),
       (e("touch").hidden = !a.touch),
       (e("coop-part").onchange = (e) => HaloCoop.setView(e.target.value)),
       (e("coop-leave").onclick = () => {
