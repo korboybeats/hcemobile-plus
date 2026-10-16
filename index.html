@@ -15,7 +15,7 @@
 <link rel="manifest" href="manifest.webmanifest?h=a5d1b19b77">
 <link rel="apple-touch-icon" href="icons/icon-180.png?h=e05eb6fdb3">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png?h=0ac2ce4db8">
-<link rel="stylesheet" href="style.css?h=56f3dc0e69p31">
+<link rel="stylesheet" href="style.css?h=56f3dc0e69p32">
 <link rel="stylesheet" href="custom-controls.css">
 <script src="i18n.js?h=23b7f2c466"></script>
 <style>.layout-stack{display:flex;flex-direction:column;align-items:stretch;gap:6px}.layout-stack>.button{width:100%;margin:0;box-sizing:border-box}.row .button.sens-nudge,.game-menu .panel .button.sens-nudge{flex:0 0 26px;width:26px!important;min-width:26px;padding:0;margin:0 1px;font-size:13px;line-height:1}.row:has(.sens-nudge){flex-direction:row!important;align-items:center!important;flex-wrap:nowrap}.game-menu .panel{max-height:calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:calc(14px + env(safe-area-inset-bottom))!important}.game-menu{align-items:center}body.unified-edit #layout-editor{background:transparent!important}body.unified-edit #hud-editor{pointer-events:none;background:none!important}body.unified-edit #hud-editor .hud-piece,body.unified-edit #hud-editor .editor-bar{pointer-events:auto}body.unified-edit #hud-editor [data-done]{display:none}</style>
@@ -800,8 +800,8 @@
         <h3 class="gm-sub">Sensitivity</h3>
         <div class="gm-row"><div class="gm-label">Horizontal</div><div class="gm-ctl gm-slide"><input type="range" id="menu-gyro-h" min="0.1" max="4" step="0.01"><button type="button" class="button sens-nudge" data-for="menu-gyro-h" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-h-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-h" data-d="0.01">+</button></div></div>
         <div class="gm-row"><div class="gm-label">Vertical</div><div class="gm-ctl gm-slide"><input type="range" id="menu-gyro-v" min="0.1" max="4" step="0.01"><button type="button" class="button sens-nudge" data-for="menu-gyro-v" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-v-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-v" data-d="0.01">+</button></div></div>
-        <div class="gm-row"><div class="gm-label">Zoom 1<small>Pistol, sniper 1st zoom</small></div><div class="gm-ctl gm-slide"><input type="range" id="menu-gyro-zoom" min="0.1" max="1.5" step="0.01"><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-zoom-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="0.01">+</button></div></div>
-        <div class="gm-row"><div class="gm-label">Zoom 2<small>Sniper 2nd zoom (8x)</small></div><div class="gm-ctl gm-slide"><input type="range" id="menu-gyro-zoom2" min="0.1" max="1.5" step="0.01"><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom2" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-zoom2-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom2" data-d="0.01">+</button></div></div>
+        <div class="gm-row"><div class="gm-label">Zoom 1<small>Pistol, sniper 1st zoom. 1.00 = game default</small></div><div class="gm-ctl gm-slide"><input type="range" id="menu-gyro-zoom" min="0.1" max="1.5" step="0.01"><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-zoom-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="0.01">+</button></div></div>
+        <div class="gm-row"><div class="gm-label">Zoom 2<small>Sniper 2nd zoom (8x). 1.00 = game default</small></div><div class="gm-ctl gm-slide"><input type="range" id="menu-gyro-zoom2" min="0.1" max="1.5" step="0.01"><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom2" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-zoom2-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom2" data-d="0.01">+</button></div></div>
         <h3 class="gm-sub">Axes</h3>
         <label class="gm-row"><span class="gm-label">Invert vertical</span><span class="gm-ctl"><input type="checkbox" class="gm-switch" id="menu-gyro-invert"></span></label>
         <label class="gm-row"><span class="gm-label">Invert horizontal</span><span class="gm-ctl"><input type="checkbox" class="gm-switch" id="menu-gyro-invert-h"></span></label>
@@ -916,13 +916,13 @@
   </div>
 </div>
 
-<script src="input.js?h=3a5de83e80p31"></script>
+<script src="input.js?h=3a5de83e80p32"></script>
 <script src="api-config.js"></script>
 <script src="account.js?h=836bd539e1"></script>
 <script src="net.js?h=ec1ef8683f"></script>
 <script src="coop.js?h=f1599437b1"></script>
 <script src="lobby.js?h=522843c2fa"></script>
-<script src="app.js?h=d0ee677199p31"></script>
+<script src="app.js?h=d0ee677199p32"></script>
 <script>/* plus31: settings tabs + tap/hold */(function(){var K="hcep-menuTab",m=document.getElementById("game-menu");if(!m)return;var tabs=m.querySelectorAll("[data-gm-tab]"),panes=m.querySelectorAll("[data-gm-pane]"),body=m.querySelector(".gm-body");function show(n){var ok=false;panes.forEach(function(p){if(p.dataset.gmPane===n)ok=true});if(!ok)n="controls";tabs.forEach(function(t){var on=t.dataset.gmTab===n;t.classList.toggle("on",on);t.setAttribute("aria-selected",on)});panes.forEach(function(p){p.classList.toggle("on",p.dataset.gmPane===n)});body&&(body.scrollTop=0);try{localStorage.setItem(K,n)}catch(e){}}tabs.forEach(function(t){t.addEventListener("click",function(){show(t.dataset.gmTab)})});var last="controls";try{last=localStorage.getItem(K)||"controls"}catch(e){}show(last);
 var TK="hcep-tapHold";function th(){try{return Object.assign({crouch:"hold",aim:"tap"},JSON.parse(localStorage.getItem(TK)||"{}"))}catch(e){return{crouch:"hold",aim:"tap"}}}function sync(){var v=th();m.querySelectorAll("[data-th]").forEach(function(g){g.querySelectorAll("[data-v]").forEach(function(b){var on=b.dataset.v===v[g.dataset.th];b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)})});window.HaloInput&&HaloInput.setTapHold&&HaloInput.setTapHold(v)}m.querySelectorAll("[data-th] [data-v]").forEach(function(b){b.addEventListener("click",function(){var v=th();v[b.parentNode.dataset.th]=b.dataset.v;try{localStorage.setItem(TK,JSON.stringify(v))}catch(e){}sync()})});sync()})();</script>
 </body>

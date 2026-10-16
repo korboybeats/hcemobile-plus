@@ -199,8 +199,8 @@ const HaloInput = (() => {
       zo = !1,
       sx = 1,
       sy = 1,
-      zm = 0.6,
-      zm2 = 0.3,
+      zm = 1,
+      zm2 = 1,
       zl = 0,
       inv = !1,
       gate = null,
@@ -482,8 +482,8 @@ const HaloInput = (() => {
         zo = !!o.zoomOnly;
         sx = +o.h || 1;
         sy = +o.v || 1;
-        zm = o.zoom1 != null ? +o.zoom1 : o.zoom != null ? +o.zoom : 0.6;
-        zm2 = o.zoom2 == null ? 0.3 : +o.zoom2;
+        zm = o.zoom1 != null ? +o.zoom1 : o.zoom != null ? +o.zoom : 1;
+        zm2 = o.zoom2 == null ? 1 : +o.zoom2;
         inv = !!o.invert;
         invH = !!o.invertH;
         swp = !!o.swap;
@@ -503,10 +503,17 @@ const HaloInput = (() => {
           q = b & ~p;
         prev[i] = b;
         if (q & (1 << m)) {
-          zl = (zl + 1) % 3;
-          zoomed = zl > 0;
+          var tn = performance.now();
+          /* a press arriving <150ms after the previous is a duplicate edge; ignore */
+          if (tn - (this._zt || 0) > 150) {
+            zl = (zl + 1) % 3;
+            zoomed = zl > 0;
+          }
+          this._zt = tn;
         }
-        if (q & ((1 << l) | (1 << r) | (1 << s) | (1 << 30))) {
+        /* plus32: firing does NOT unzoom in Halo; resetting on trigger desynced the counter (next Zoom press
+           then landed on level 2 / 'zoomed' while actually at 2x or unzoomed => very slow gyro). */
+        if (q & ((1 << l) | (1 << r) | (1 << s))) {
           zoomed = !1;
           zl = 0;
         }
