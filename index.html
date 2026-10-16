@@ -15,7 +15,7 @@
 <link rel="manifest" href="manifest.webmanifest?h=a5d1b19b77">
 <link rel="apple-touch-icon" href="icons/icon-180.png?h=e05eb6fdb3">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png?h=0ac2ce4db8">
-<link rel="stylesheet" href="style.css?h=56f3dc0e69p22">
+<link rel="stylesheet" href="style.css?h=56f3dc0e69p31">
 <link rel="stylesheet" href="custom-controls.css">
 <script src="i18n.js?h=23b7f2c466"></script>
 <style>.layout-stack{display:flex;flex-direction:column;align-items:stretch;gap:6px}.layout-stack>.button{width:100%;margin:0;box-sizing:border-box}.row .button.sens-nudge,.game-menu .panel .button.sens-nudge{flex:0 0 26px;width:26px!important;min-width:26px;padding:0;margin:0 1px;font-size:13px;line-height:1}.row:has(.sens-nudge){flex-direction:row!important;align-items:center!important;flex-wrap:nowrap}.game-menu .panel{max-height:calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:calc(14px + env(safe-area-inset-bottom))!important}.game-menu{align-items:center}body.unified-edit #layout-editor{background:transparent!important}body.unified-edit #hud-editor{pointer-events:none;background:none!important}body.unified-edit #hud-editor .hud-piece,body.unified-edit #hud-editor .editor-bar{pointer-events:auto}body.unified-edit #hud-editor [data-done]{display:none}</style>
@@ -762,60 +762,97 @@
   </div>
 </div>
 <div id="game-menu" class="overlay game-menu" hidden>
-  <div class="panel">
-    <h2>Menu</h2>
-    <label class="row">Aim sensitivity <input type="range" id="menu-look" min="0.1" max="5" step="0.01"> <button type="button" class="button sens-nudge" data-for="menu-look" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-look-val"></span><button type="button" class="button sens-nudge" data-for="menu-look" data-d="0.01">+</button></label>
-    <label class="row">Aim smoothing <input type="range" id="menu-lookf" min="0" max="1" step="0.01"> <span class="editor-row-value" id="menu-lookf-val"></span></label>
-    <div class="row">Gyro aim <span class="gyro-seg" id="menu-gyro"><button type="button" class="button" data-gyro="off">Off</button><button type="button" class="button" data-gyro="always">Always</button><button type="button" class="button" data-gyro="zoom">Zoom</button></span></div><p class="small" id="menu-gyro-status">Motion: not asked</p>
-    <p class="small" id="menu-gyro-msg" hidden></p>
-    <label class="row">Gyro horizontal <input type="range" id="menu-gyro-h" min="0.1" max="4" step="0.01"> <button type="button" class="button sens-nudge" data-for="menu-gyro-h" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-h-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-h" data-d="0.01">+</button></label>
-    <label class="row">Gyro vertical <input type="range" id="menu-gyro-v" min="0.1" max="4" step="0.01"> <button type="button" class="button sens-nudge" data-for="menu-gyro-v" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-v-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-v" data-d="0.01">+</button></label>
-    <label class="row">Gyro zoom 1 (2x: pistol, sniper first zoom, etc.) <input type="range" id="menu-gyro-zoom" min="0.1" max="1.5" step="0.01"> <button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-zoom-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="0.01">+</button></label><label class="row">Gyro zoom 2 (sniper/rocket second level 8x) <input type="range" id="menu-gyro-zoom2" min="0.1" max="1.5" step="0.01"> <button type="button" class="button sens-nudge" data-for="menu-gyro-zoom2" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-zoom2-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom2" data-d="0.01">+</button></label>
-    <label class="row">Invert gyro vertical <input type="checkbox" id="menu-gyro-invert"></label>
-    <label class="row">Invert gyro horizontal <input type="checkbox" id="menu-gyro-invert-h"></label>
-    <label class="row">Swap gyro axes <input type="checkbox" id="menu-gyro-swap"></label>
-    <label class="row">Show gyro debug overlay <input type="checkbox" class="gyro-dbg-toggle" id="menu-gyro-dbg"></label>
-    <p class="small" id="menu-build" style="opacity:.6"></p>
-    <label class="row" id="menu-layout-row">Touch layout
-      <select id="menu-layout">
-        <option value="modern">Modern (like mobile shooters)</option>
-        <option value="xbox">Original Xbox controller</option>
-      </select>
-      <button type="button" class="button small-button" id="menu-edit-layout">Edit layout</button></label>
-    <details class="keys-box" id="menu-keys-box">
-      <summary>Keyboard controls</summary>
-      <div class="key-list" id="menu-keys"></div>
-    </details>
-    <div class="row buttons"><button type="button" class="button" id="menu-chat">Friends &amp; chat <span class="badge"
-        id="menu-chat-badge" hidden></span></button></div>
-    <label class="row" id="menu-coop-row" hidden><input type="checkbox" id="menu-coop"> Host co-op (a friend in your lobby joins
-      as player 2)</label>
-    <p class="small" id="menu-coop-status" hidden></p>
-    <label class="row"><input type="checkbox" id="menu-silent"> Play sound when the phone is on silent</label>
-    <label class="row"><input type="checkbox" id="menu-hud-lock"> Lock weapon HUD position</label>
-    <label class="row"><input type="checkbox" id="menu-fps"> Show the frame rate</label>
-    <label class="row"><input type="checkbox" id="menu-fps-bg"> FPS/ping background <button type="button" class="button" id="menu-fps-reset" style="margin-left:auto;padding:2px 8px;font-size:.8em">Reset position</button></label>
-    <label class="row"><input type="checkbox" id="menu-ping"> Show the ping (online games)</label>
-    <label class="row"><input type="checkbox" id="menu-timing"> Show performance details</label>
-    <div class="row buttons"><button type="button" class="button" id="menu-photo">Photo mode <span class="small">(hides the HUD and controls)</span></button></div>
-    <label class="row">Resolution
-      <select id="menu-resolution">
-          <option value="auto">Automatic (480p on phones, 360p on slow ones, up to 1080p on computers)</option>
-          <option value="360">360p (fastest, for slow phones)</option>
-          <option value="480">480p (original Xbox)</option>
-          <option value="720">720p</option>
-          <option value="1080">1080p</option>
-          <option value="1440">1440p</option>
-          <option value="native">Native screen resolution</option>
-      </select></label>
-    <label class="row" id="menu-game-row">Game
-      <select id="menu-game"></select>
-      <button type="button" class="button small-button" id="menu-switch-game">Switch and restart</button></label>
-    <div class="row buttons">
-      <button type="button" class="button" id="menu-graphics-report">Report a graphics problem</button>
-      <button type="button" class="button" id="menu-copy-log">Copy log</button>
-      <button type="button" class="button" id="menu-quit">Quit to the start page</button>
-      <button type="button" class="button primary" id="menu-resume">Resume</button>
+  <div class="panel gm">
+    <div class="gm-head"><h2>Settings</h2><button type="button" class="button primary gm-resume" id="menu-resume">Resume</button></div>
+    <nav class="gm-rail" role="tablist" aria-label="Settings categories">
+      <button type="button" role="tab" class="gm-tab" data-gm-tab="controls"><svg viewBox="0 0 24 24"><path d="M6 9h4M8 7v4M15 10h.01M18 8h.01M4 6h16a2 2 0 0 1 2 2v6a6 6 0 0 1-6 6l-2-3h-4l-2 3a6 6 0 0 1-6-6V8a2 2 0 0 1 2-2z"/></svg><span>Controls</span></button>
+      <button type="button" role="tab" class="gm-tab" data-gm-tab="gyro"><svg viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M3 9a9 9 0 0 0 0 6M21 9a9 9 0 0 1 0 6"/></svg><span>Gyro</span></button>
+      <button type="button" role="tab" class="gm-tab" data-gm-tab="display"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="1"/><path d="M8 21h8M12 17v4"/></svg><span>Display</span></button>
+      <button type="button" role="tab" class="gm-tab" data-gm-tab="audio"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/></svg><span>Audio</span></button>
+      <button type="button" role="tab" class="gm-tab" data-gm-tab="online"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M16 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 6"/></svg><span>Online</span></button>
+      <button type="button" role="tab" class="gm-tab" data-gm-tab="about"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg><span>About</span></button>
+    </nav>
+    <div class="gm-body">
+      <section class="gm-pane" data-gm-pane="controls">
+        <h3 class="gm-sub">Aim</h3>
+        <div class="gm-row"><div class="gm-label">Sensitivity</div><div class="gm-ctl gm-slide"><input type="range" id="menu-look" min="0.1" max="5" step="0.01"><button type="button" class="button sens-nudge" data-for="menu-look" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-look-val"></span><button type="button" class="button sens-nudge" data-for="menu-look" data-d="0.01">+</button></div></div>
+        <div class="gm-row"><div class="gm-label">Smoothing<small>Left = raw 1:1</small></div><div class="gm-ctl gm-slide"><input type="range" id="menu-lookf" min="0" max="1" step="0.01"><span class="editor-row-value gm-wide-val" id="menu-lookf-val"></span></div></div>
+        <h3 class="gm-sub">Buttons</h3>
+        <div class="gm-row"><div class="gm-label">Crouch<small>Hold: crouch while held · Tap: toggle</small></div><div class="gm-ctl"><span class="gm-seg" data-th="crouch"><button type="button" class="button" data-v="hold">Hold</button><button type="button" class="button" data-v="tap">Tap</button></span></div></div>
+        <div class="gm-row"><div class="gm-label">Aim (zoom)<small>Tap: cycle zoom · Hold: zoom while held</small></div><div class="gm-ctl"><span class="gm-seg" data-th="aim"><button type="button" class="button" data-v="tap">Tap</button><button type="button" class="button" data-v="hold">Hold</button></span></div></div>
+        <h3 class="gm-sub">Touch layout</h3>
+        <div class="gm-row" id="menu-layout-row"><div class="gm-label">Layout</div><div class="gm-ctl">
+          <select id="menu-layout">
+            <option value="modern">Modern (like mobile shooters)</option>
+            <option value="xbox">Original Xbox controller</option>
+          </select>
+          <button type="button" class="button small-button" id="menu-edit-layout">Edit layout</button></div></div>
+        <h3 class="gm-sub">Keyboard</h3>
+        <details class="keys-box gm-keys" id="menu-keys-box">
+          <summary>Keyboard controls</summary>
+          <div class="key-list" id="menu-keys"></div>
+        </details>
+      </section>
+      <section class="gm-pane" data-gm-pane="gyro">
+        <h3 class="gm-sub">Gyro aim</h3>
+        <div class="gm-row"><div class="gm-label">Mode<small id="menu-gyro-status">Motion: not asked</small></div><div class="gm-ctl"><span class="gyro-seg gm-seg" id="menu-gyro"><button type="button" class="button" data-gyro="off">Off</button><button type="button" class="button" data-gyro="always">Always</button><button type="button" class="button" data-gyro="zoom">Zoom</button></span></div></div>
+        <p class="small gm-msg" id="menu-gyro-msg" hidden></p>
+        <h3 class="gm-sub">Sensitivity</h3>
+        <div class="gm-row"><div class="gm-label">Horizontal</div><div class="gm-ctl gm-slide"><input type="range" id="menu-gyro-h" min="0.1" max="4" step="0.01"><button type="button" class="button sens-nudge" data-for="menu-gyro-h" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-h-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-h" data-d="0.01">+</button></div></div>
+        <div class="gm-row"><div class="gm-label">Vertical</div><div class="gm-ctl gm-slide"><input type="range" id="menu-gyro-v" min="0.1" max="4" step="0.01"><button type="button" class="button sens-nudge" data-for="menu-gyro-v" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-v-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-v" data-d="0.01">+</button></div></div>
+        <div class="gm-row"><div class="gm-label">Zoom 1<small>Pistol, sniper 1st zoom</small></div><div class="gm-ctl gm-slide"><input type="range" id="menu-gyro-zoom" min="0.1" max="1.5" step="0.01"><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-zoom-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom" data-d="0.01">+</button></div></div>
+        <div class="gm-row"><div class="gm-label">Zoom 2<small>Sniper 2nd zoom (8x)</small></div><div class="gm-ctl gm-slide"><input type="range" id="menu-gyro-zoom2" min="0.1" max="1.5" step="0.01"><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom2" data-d="-0.01">&minus;</button><span class="editor-row-value" id="menu-gyro-zoom2-val"></span><button type="button" class="button sens-nudge" data-for="menu-gyro-zoom2" data-d="0.01">+</button></div></div>
+        <h3 class="gm-sub">Axes</h3>
+        <label class="gm-row"><span class="gm-label">Invert vertical</span><span class="gm-ctl"><input type="checkbox" class="gm-switch" id="menu-gyro-invert"></span></label>
+        <label class="gm-row"><span class="gm-label">Invert horizontal</span><span class="gm-ctl"><input type="checkbox" class="gm-switch" id="menu-gyro-invert-h"></span></label>
+        <label class="gm-row"><span class="gm-label">Swap axes</span><span class="gm-ctl"><input type="checkbox" class="gm-switch" id="menu-gyro-swap"></span></label>
+        <label class="gm-row"><span class="gm-label">Debug overlay</span><span class="gm-ctl"><input type="checkbox" class="gyro-dbg-toggle gm-switch" id="menu-gyro-dbg"></span></label>
+      </section>
+      <section class="gm-pane" data-gm-pane="display">
+        <h3 class="gm-sub">HUD</h3>
+        <label class="gm-row"><span class="gm-label">Lock weapon HUD position</span><span class="gm-ctl"><input type="checkbox" class="gm-switch" id="menu-hud-lock"></span></label>
+        <div class="gm-row"><div class="gm-label">Photo mode<small>Hides the HUD and controls</small></div><div class="gm-ctl"><button type="button" class="button small-button" id="menu-photo">Open</button></div></div>
+        <h3 class="gm-sub">Overlays</h3>
+        <label class="gm-row"><span class="gm-label">Frame rate</span><span class="gm-ctl"><input type="checkbox" class="gm-switch" id="menu-fps"></span></label>
+        <label class="gm-row"><span class="gm-label">Ping<small>Online games</small></span><span class="gm-ctl"><input type="checkbox" class="gm-switch" id="menu-ping"></span></label>
+        <div class="gm-row"><label class="gm-label" for="menu-fps-bg">FPS/ping background</label><div class="gm-ctl"><button type="button" class="button small-button" id="menu-fps-reset">Reset position</button><input type="checkbox" class="gm-switch" id="menu-fps-bg"></div></div>
+        <label class="gm-row"><span class="gm-label">Performance details</span><span class="gm-ctl"><input type="checkbox" class="gm-switch" id="menu-timing"></span></label>
+        <h3 class="gm-sub">Graphics</h3>
+        <div class="gm-row"><div class="gm-label">Resolution</div><div class="gm-ctl">
+          <select id="menu-resolution">
+              <option value="auto">Automatic</option>
+              <option value="360">360p (fastest)</option>
+              <option value="480">480p (original Xbox)</option>
+              <option value="720">720p</option>
+              <option value="1080">1080p</option>
+              <option value="1440">1440p</option>
+              <option value="native">Native</option>
+          </select></div></div>
+      </section>
+      <section class="gm-pane" data-gm-pane="audio">
+        <h3 class="gm-sub">Sound</h3>
+        <label class="gm-row"><span class="gm-label">Play sound on silent<small>Pauses music from other apps</small></span><span class="gm-ctl"><input type="checkbox" class="gm-switch" id="menu-silent"></span></label>
+      </section>
+      <section class="gm-pane" data-gm-pane="online">
+        <h3 class="gm-sub">Social</h3>
+        <div class="gm-row"><div class="gm-label">Friends &amp; chat</div><div class="gm-ctl"><button type="button" class="button small-button" id="menu-chat">Open <span class="badge" id="menu-chat-badge" hidden></span></button></div></div>
+        <h3 class="gm-sub">Co-op</h3>
+        <label class="gm-row" id="menu-coop-row" hidden><span class="gm-label">Host co-op<small>A friend in your lobby joins as player 2</small></span><span class="gm-ctl"><input type="checkbox" class="gm-switch" id="menu-coop"></span></label>
+        <p class="small gm-msg" id="menu-coop-status" hidden></p>
+        <p class="small gm-msg gm-coop-none">Co-op hosting appears here when you're in a lobby.</p>
+      </section>
+      <section class="gm-pane" data-gm-pane="about">
+        <h3 class="gm-sub">Build</h3>
+        <div class="gm-row"><div class="gm-label">Version</div><div class="gm-ctl"><span class="gm-val" id="menu-build"></span></div></div>
+        <div class="gm-row" id="menu-game-row"><div class="gm-label">Game</div><div class="gm-ctl">
+          <select id="menu-game"></select>
+          <button type="button" class="button small-button" id="menu-switch-game">Switch &amp; restart</button></div></div>
+        <h3 class="gm-sub">Support</h3>
+        <div class="gm-row"><div class="gm-label">Graphics problem</div><div class="gm-ctl"><button type="button" class="button small-button" id="menu-graphics-report">Report</button></div></div>
+        <div class="gm-row"><div class="gm-label">Log</div><div class="gm-ctl"><button type="button" class="button small-button" id="menu-copy-log">Copy log</button></div></div>
+        <h3 class="gm-sub">Session</h3>
+        <div class="gm-row"><div class="gm-label">Quit to the start page</div><div class="gm-ctl"><button type="button" class="button small-button gm-danger" id="menu-quit">Quit</button></div></div>
+      </section>
     </div>
   </div>
 </div>
@@ -879,12 +916,14 @@
   </div>
 </div>
 
-<script src="input.js?h=3a5de83e80p30"></script>
+<script src="input.js?h=3a5de83e80p31"></script>
 <script src="api-config.js"></script>
 <script src="account.js?h=836bd539e1"></script>
 <script src="net.js?h=ec1ef8683f"></script>
 <script src="coop.js?h=f1599437b1"></script>
 <script src="lobby.js?h=522843c2fa"></script>
-<script src="app.js?h=d0ee677199p30"></script>
+<script src="app.js?h=d0ee677199p31"></script>
+<script>/* plus31: settings tabs + tap/hold */(function(){var K="hcep-menuTab",m=document.getElementById("game-menu");if(!m)return;var tabs=m.querySelectorAll("[data-gm-tab]"),panes=m.querySelectorAll("[data-gm-pane]"),body=m.querySelector(".gm-body");function show(n){var ok=false;panes.forEach(function(p){if(p.dataset.gmPane===n)ok=true});if(!ok)n="controls";tabs.forEach(function(t){var on=t.dataset.gmTab===n;t.classList.toggle("on",on);t.setAttribute("aria-selected",on)});panes.forEach(function(p){p.classList.toggle("on",p.dataset.gmPane===n)});body&&(body.scrollTop=0);try{localStorage.setItem(K,n)}catch(e){}}tabs.forEach(function(t){t.addEventListener("click",function(){show(t.dataset.gmTab)})});var last="controls";try{last=localStorage.getItem(K)||"controls"}catch(e){}show(last);
+var TK="hcep-tapHold";function th(){try{return Object.assign({crouch:"hold",aim:"tap"},JSON.parse(localStorage.getItem(TK)||"{}"))}catch(e){return{crouch:"hold",aim:"tap"}}}function sync(){var v=th();m.querySelectorAll("[data-th]").forEach(function(g){g.querySelectorAll("[data-v]").forEach(function(b){var on=b.dataset.v===v[g.dataset.th];b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)})});window.HaloInput&&HaloInput.setTapHold&&HaloInput.setTapHold(v)}m.querySelectorAll("[data-th] [data-v]").forEach(function(b){b.addEventListener("click",function(){var v=th();v[b.parentNode.dataset.th]=b.dataset.v;try{localStorage.setItem(TK,JSON.stringify(v))}catch(e){}sync()})});sync()})();</script>
 </body>
 </html>
